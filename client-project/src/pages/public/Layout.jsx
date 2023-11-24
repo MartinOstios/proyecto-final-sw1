@@ -7,7 +7,10 @@ const Layout = () => {
   return (
     <>
       <Navbar/>
-      <Outlet/>
+      <div style={{height: '100vh', backgroundColor: '#FBF6EA'}}>
+        <Outlet/>
+      </div>
+      
       <Footer/>
     </>
   )

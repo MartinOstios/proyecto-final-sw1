@@ -13,7 +13,7 @@ const auth = (req, res, next) => {
 		});
 	}
 
-	let token = req.headers.authorization.replace(/['"]+/g, '');
+	const token = req.headers.authorization.replace(/['"]+/g, '').split(" ")[1];
 	try{
 		const payload = jwt.decode(token, secret);
 		if(payload.exp <= moment().unix()){

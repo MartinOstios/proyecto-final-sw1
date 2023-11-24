@@ -1,0 +1,28 @@
+.navbar {
+    background-color: #8595E4;
+    padding-right: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    & ul {
+        margin: 0;
+        padding: 0;
+        margin-left: 20px;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 30px;
+        list-style-type: none;
+        text-decoration: none;
+
+        & img {
+            width: 120px;
+            cursor: pointer;
+        }
+    }
+}
+
+.navLink{
+    text-decoration: none;
+    color: white;
+}

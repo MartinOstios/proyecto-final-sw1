@@ -27,7 +27,7 @@ const CREATE = async (req, res) => {
 		console.log(file);
 		params.avatar = file.path;
 	}
-	if (!req.file && updateParams.avatar !== undefined && updateParams.avatar === ""){
+	if (!req.file && params.avatar !== undefined && params.avatar === ""){
 		return res.status(400).json({
 			status: 400,
 			type: "error",
