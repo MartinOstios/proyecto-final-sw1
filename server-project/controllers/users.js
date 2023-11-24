@@ -21,7 +21,7 @@ const validate = (params, action) => {
 		? validator.isLength(params.name, { min: 1, max: 40 })
 		: null;
 	const lastname = params.lastname
-		? validator.isLength(params.name, { min: 1, max: 40 })
+		? validator.isLength(params.lastname, { min: 1, max: 40 })
 		: null;
 	const email = params.email ? validator.isEmail(params.email) : null;
 	const pwd = params.password
@@ -42,6 +42,7 @@ const validate = (params, action) => {
 
 const CREATE = async (req, res) => {
 	const params = req.body;
+	console.log(params);
 	if (req.file) {
 		const file = req.file;
 		params.avatar = file.path;
