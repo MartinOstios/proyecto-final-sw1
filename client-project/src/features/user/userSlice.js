@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import {createSlice} from '@reduxjs/toolkit';
 
 const initialState = [
     {
@@ -6,8 +6,8 @@ const initialState = [
             lastname: "",
             email: "",
             password: "",
-            active: "",
-            avatar: "",
+            active: true,
+            avatar: null,
             address: "",
             role: "",
     }
@@ -15,13 +15,35 @@ const initialState = [
 
 export const userSlice = createSlice({
     name: 'users',
-    initialState: {},
+    initialState,
     reducers: {
         addUsers: (state, action) => {
-            return action.payload;
+            const { name, lastname, email, password, active, avatar, address, role } = action.payload;
+            state.push({
+                name: name,
+                lastname: lastname,
+                email: email,
+                password: password,
+                avatar: avatar,
+                address: address,
+                role: role,
+            });
         },
         editUsers: (state, action) => {
-            return initialState;
+            const { name, lastname, email, password, avatar, address } = action.payload;
+            const user = state.find(user => user.email === email);
+            if (user) {
+                user.name = name;
+                user.lastname = lastname;
+                user.email = email;
+                user.password = password;
+                user.avatar = avatar;
+                user.address = address;
+            }
         }
     }
 });
+
+export const { addUsers, editUsers } = userSlice.actions;
+
+export default userSlice.reducer;
