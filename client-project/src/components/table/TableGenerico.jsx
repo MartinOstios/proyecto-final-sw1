@@ -11,7 +11,6 @@ import { IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SearchIcon from '@mui/icons-material/Search';
 import UpdateIcon from '@mui/icons-material/Update';
-import ModalGenerico from '../modal/ModalGenerico';
 
 export default function TableGenerica({ columnas, datos, handleOpenUpdate, handleOpenSearch, handleDelete }) {
     return (

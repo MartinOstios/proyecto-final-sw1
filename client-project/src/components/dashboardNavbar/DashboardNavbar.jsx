@@ -3,7 +3,6 @@ import React from 'react'
 import '../navbar/Navbar'
 import { Link } from 'react-router-dom'
 import { Button } from '@mui/material'
-import images from '../../assets/images'
 
 export const DashboardNavbar = () => {
     return (

@@ -4,16 +4,15 @@ const { BASE_API, API_ROUTES } = ENV;
 export class Users {
     // http://localhost:3100/api/v1
     baseApi = BASE_API;
-    userUrl = `${this.BASE_API}/${API_ROUTES.USERS}`
+    userUrl = `${BASE_API}/${API_ROUTES.USERS}`
 
     // http://localhost:3100/api/v1/users/new
     createUser = async (data) => {
-        const url = `${userUrl}/new`;
+        const url = `${this.userUrl}/new`;
         const params = {
             method: "POST",
-            body: JSON.stringify(data),
+            body: data,
             headers: {
-                'Content-Type': 'application/json',
                 'Authorization': `Bearer ${this.getAccessToken()}`,
             }
         };
@@ -30,13 +29,12 @@ export class Users {
     }
 
     // http://localhost:3100/api/v1/users/mail
-    updateUser = async (data) => {
-        const url = `${userUrl}/${data.mail}`;
+    updateUser = async (email, data) => {
+        const url = `${this.userUrl}/${email}`;
         const params = {
             method: "PATCH",
-            body: JSON.stringify(data),
+            body: data,
             headers: {
-                'content-Type': 'application/json',
                 'Authorization': `Bearer ${this.getAccessToken()}`,
             }
         };
@@ -54,7 +52,7 @@ export class Users {
 
     // http://localhost:3100/api/v1/users/mail
     deleteUser = async (mail) => {
-        const url = `${userUrl}/${mail}`;
+        const url = `${this.userUrl}/${mail}`;
         const params = {
             method: "DELETE",
             headers: {
@@ -74,14 +72,13 @@ export class Users {
         }
     }
 
-    // http://localhost:3100/api/v1/users/mail
-    showUser = async (mail) => {
-        const url = `${userUrl}/${mail}`;
+    // http://localhost:3100/api/v1/users
+    showUsers = async () => {
+        const url = `${this.userUrl}`;
         const params = {
             method: "GET",
             headers: {
-                'content-Type': 'application/json',
-                'Authorization': `Bearer ${this.getAccessToken()}`,
+                'content-Type': 'application/json'
             }
         };
         try {
@@ -95,4 +92,8 @@ export class Users {
             return null;
         }
     }
+
+    getAccessToken = () => {
+        return localStorage.getItem("access");
+    };
 }

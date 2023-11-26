@@ -16,7 +16,7 @@ const UserSchema = Schema({
 	},
 	avatar: {
 		type: String,
-		default: "uploads/avatar/default.png",
+		default: "http://localhost:3100/public/default.png",
 	},
 	address: {
 		type: Schema.Types.ObjectId, // TODO: <Schema.Types.Mixed> para mostrar el objeto completo

@@ -45,7 +45,7 @@ const CREATE = async (req, res) => {
 	console.log(params);
 	if (req.file) {
 		const file = req.file;
-		params.avatar = file.path;
+		params.avatar = `http://localhost:3100/public/users/${file.filename}`;
 	}
 	if (!req.file && params.avatar !== undefined && updateParams.avatar === ""){
 		return res.status(400).json({
