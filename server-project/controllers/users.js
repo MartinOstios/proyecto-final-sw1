@@ -99,7 +99,7 @@ const CREATE = async (req, res) => {
 
 const READ_ALL = async (req, res) => {
 	try {
-		const users = await User.find({});
+		const users = await User.find().populate('role');
 		return res.status(200).send(users);
 	} catch (e) {
 		return res.status(400).json({
@@ -121,7 +121,7 @@ const READ_BY_MAIL = async (req, res) => {
 		});
 	}
 	try {
-		const users = await User.find({ email: mail });
+		const users = await User.find({ email: mail }).populate('role');
 		if (users.length === 0) {
 			return res.status(404).json({
 				status: 404,

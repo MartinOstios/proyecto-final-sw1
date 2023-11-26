@@ -12,6 +12,9 @@ const style = {
     border: '2px solid #000',
     boxShadow: 24,
     p: 4,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
 };
 
 export default function ModalGenerico({children, open, handleOpen}) {
