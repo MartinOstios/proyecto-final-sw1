@@ -24,7 +24,7 @@ export class Users {
             const result = await response.json();
             return result;
         } catch (error) {
-            return null;
+            return error;
         }
     }
 

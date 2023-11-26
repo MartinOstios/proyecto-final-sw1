@@ -1,16 +1,22 @@
 import React, { useEffect, useState } from 'react'
-import { Button, InputLabel, Typography, Grid, TextField, Select, MenuItem, FormControl } from '@mui/material'
+import { Button, InputLabel, Typography, Grid, TextField, Select, MenuItem, FormControl, Backdrop, CircularProgress } from '@mui/material'
 import TableGenerica from '../../../components/table/TableGenerico'
 import ModalGenerico from '../../../components/modal/ModalGenerico'
 
 import { useDispatch } from 'react-redux'
-import { setUsers, addUsers, editUsers } from '../../../features/user/userSlice'
+import { setUsers, addUsers} from '../../../features/user/userSlice'
 
 import { Users } from '../../../api/user';
 import { Role } from '../../../api/role';
 
 
+import { useSnackbar } from 'notistack'
+
+
 const User = () => {
+  const { enqueueSnackbar } = useSnackbar();
+
+
   const userApi = new Users();
   const roleApi = new Role();
 
@@ -19,6 +25,7 @@ const User = () => {
   const [openUpdate, setOpenUpdate] = useState(false);
   const [openSearch, setOpenSearch] = useState(false);
   const [openCreate, setOpenCreate] = useState(false);
+  const [openBackdrop, setOpenBackdrop] = useState(false);
   const [selectedData, setSelectedData] = useState(null);
   const [formInfo, setFormInfo] = useState({
     name: '',
@@ -49,12 +56,17 @@ const User = () => {
   }
 
   const handleDelete = async (dataId) => {
+    setOpenBackdrop(true);
     const data = findDataById(dataId);
     const res = await userApi.deleteUser(data.email);
 
-    if (res) {
+    if (res.status === 200) {
+      enqueueSnackbar(res.message, { variant: 'success' });
       getData();
+    } else {
+      enqueueSnackbar(`Error: ${res.message}`, { variant: 'error' });
     }
+    setOpenBackdrop(false);
   }
 
   const findDataById = (dataId) => {
@@ -79,8 +91,8 @@ const User = () => {
 
   // ---------- INICIO HANDLE SUBMIT
 
-  const handleCreate = async () => {
-
+  const handleSubmit = async (form) => {
+    setOpenBackdrop(true);
     // Pasar información a FormData (porque hay imágenes)
     const formData = new FormData();
     for (const [key, value] of Object.entries(formInfo)) {
@@ -89,32 +101,43 @@ const User = () => {
       }
     }
 
-    // Llamar a la API
-    const res = await userApi.createUser(formData);
+    if (form === 'create') {
+      await handleCreate(formData)
+    }
 
+    if (form === 'edit') {
+      await handleEdit(formData);
+    }
+
+    setOpenBackdrop(false);
+  }
+
+  const handleCreate = async (formData) => {
+    // Llamar API
+    setOpenCreate(false);
+    const res = await userApi.createUser(formData);
     // Llamar al Store
-    if (res) {
+    if (res.status === 200) {
       dispatch(addUsers(res));
-      getData();
+      enqueueSnackbar(res.message, { variant: 'success' });
+      await getData();
+    } else {
+      enqueueSnackbar(`Error: ${res.message}`, { variant: 'error' });
     }
   }
 
-  const handleEdit = async () => {
-    // Pasar información a FormData (porque hay imágenes)
-    const formData = new FormData();
-    for (const [key, value] of Object.entries(formInfo)) {
-      if (value !== "" && value) {
-        formData.append(key, value);
-      }
-    }
-
+  const handleEdit = async (formData) => {
     // Llamar a la API
+    setOpenUpdate(false);
     const res = await userApi.updateUser(selectedData.email, formData);
+    console.log(res)
 
     // Llamar al Store
-    if (res) {
-      //dispatch(editUsers(res));
-      getData();
+    if (res.status === 200) {
+      enqueueSnackbar(res.message, { variant: 'success' });
+      await getData();
+    } else {
+      enqueueSnackbar(`Error: ${res.message}`, { variant: 'error' });
     }
   }
 
@@ -131,14 +154,16 @@ const User = () => {
   useEffect(() => {
     getData();
     getRoles();
-  }, []);
+  }, [setDataList, setRoles]);
 
   const getData = async () => {
+    setOpenBackdrop(true);
     const data = await userApi.showUsers();
     if (data) {
       dispatch(setUsers(data));
       setDataList(data);
     }
+    setOpenBackdrop(false);
   };
 
   const getRoles = async () => {
@@ -153,7 +178,8 @@ const User = () => {
       <h1>Usuarios</h1>
       <Button variant='contained' color='primary' onClick={() => handleOpenCreate(true)} style={{ margin: "2px 2px 10px 2px" }}>Crear usuario</Button>
       <TableGenerica
-        columnas={['id', 'nombre', 'email', 'password']}
+        columnasData={['_id', 'name', 'email', 'password']}
+        columnasTabla={['ID', 'Nombre', 'Email', 'Contraseña']}
         datos={dataList}
         handleOpenSearch={handleOpenSearch}
         handleOpenUpdate={handleOpenUpdate}
@@ -205,7 +231,7 @@ const User = () => {
             </Grid>
           </Grid>
           <div style={{ marginTop: '25px', marginLeft: "150px" }}>
-            <Button variant="contained" color="primary" onClick={handleCreate}>
+            <Button variant="contained" color="primary" onClick={() => handleSubmit('create')}>
               Crear usuario
             </Button>
           </div>
@@ -251,7 +277,7 @@ const User = () => {
             </Grid>
           </Grid>
           <div style={{ marginTop: '25px', marginLeft: "150px" }}>
-            <Button variant="contained" color="primary" onClick={handleEdit} >
+            <Button variant="contained" color="primary" onClick={() => handleSubmit('edit')} >
               Actualizar usuario
             </Button>
           </div>
@@ -283,6 +309,13 @@ const User = () => {
           </Typography>
         </Grid>
       </ModalGenerico>
+
+      <Backdrop
+        sx={{ color: '#fff', zIndex: 10 }}
+        open={openBackdrop}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
 
     </div>
   )

@@ -28,15 +28,15 @@ const validate = (params, action) => {
 		? validator.isLength(params.password, { min: 8, max: 20 })
 		: null;
 	const active = params.active ? validator.isBoolean(params.active) : null;
-	const avatar = params.avatar
-		? validator.isLength(params.avatar, { min: 21 })
+	const avatarServer = params.avatarServer
+		? validator.isLength(params.avatarServer, { min: 21 })
 		: null;
 	if (params.name && !name) return false;
 	if (params.lastname && !lastname) return false;
 	if (params.email && !email) return false;
 	if (params.current_password && !pwd) return false;
 	if (params.active && !active) return false;
-	if (params.avatar && !avatar) return false;
+	if (params.avatarServer && !avatarServer) return false;
 	return true;
 };
 
@@ -45,9 +45,10 @@ const CREATE = async (req, res) => {
 	console.log(params);
 	if (req.file) {
 		const file = req.file;
-		params.avatar = `http://localhost:3100/public/users/${file.filename}`;
+		params.avatarClient = `http://localhost:3100/public/users/${file.filename}`;
+		params.avatarServer = file.path;
 	}
-	if (!req.file && params.avatar !== undefined && updateParams.avatar === ""){
+	if (!req.file && params.avatarServer !== undefined && params.avatarServer === ""){
 		return res.status(400).json({
 			status: 400,
 			type: "error",
@@ -56,10 +57,10 @@ const CREATE = async (req, res) => {
 	}
 	if (!validate(params, "POST")) {
 		if (
-			params.avatar &&
-			params.avatar != "uploads/avatar/default.png"
+			params.avatarServer &&
+			params.avatarServer != "uploads/avatar/default.png"
 		)
-			await fs.unlink(params.avatar);
+			await fs.unlink(params.avatarServer);
 		return res.status(400).json({
 			status: 400,
 			type: "error",
@@ -83,10 +84,10 @@ const CREATE = async (req, res) => {
 		});
 	} catch (e) {
 		if (
-			params.avatar &&
-			params.avatar != "uploads/avatar/default.png"
+			params.avatarServer &&
+			params.avatarServer != "uploads/avatar/default.png"
 		)
-			await fs.unlink(params.avatar);
+			await fs.unlink(params.avatarServer);
 		return res.status(400).json({
 			status: 400,
 			type: "error",
@@ -144,9 +145,10 @@ const UPDATE = async (req, res) => {
 	const updateParams = req.body;
 	if (req.file) {
 		const file = req.file;
-		updateParams.avatar = file.path;
+		updateParams.avatarClient = `http://localhost:3100/public/users/${file.filename}`;
+		updateParams.avatarServer = file.path;
 	}
-	if (!req.file && updateParams.avatar !== undefined && updateParams.avatar === ""){
+	if (!req.file && updateParams.avatarServer !== undefined && updateParams.avatarServer === ""){
 		return res.status(400).json({
 			status: 400,
 			type: "error",
@@ -184,8 +186,8 @@ const UPDATE = async (req, res) => {
 		}
 
 		const updatedUser = await User.findByIdAndUpdate(users[0]._id, {...updateParams});
-		if (updateParams.avatar && updatedUser.avatar != "uploads/avatar/default.png")
-			await fs.unlink(updatedUser.avatar);
+		if (updateParams.avatarServer && updatedUser.avatarServer != "uploads/avatar/default.png")
+			await fs.unlink(updatedUser.avatarServer);
 		return res.status(200).json({
 			status: 200,
 			type: "info",
@@ -221,8 +223,8 @@ const DELETE = async (req, res) => {
 			});
 		}
 		const user = await User.findByIdAndDelete(users[0]._id);
-		if (user.avatar && user.avatar != "uploads/avatar/default.png")
-			await fs.unlink(user.avatar);
+		if (user.avatarServer && user.avatarServer != "uploads/avatar/default.png")
+			await fs.unlink(user.avatarServer);
 		return res.status(200).json({
 			status: 200,
 			type: "info",
