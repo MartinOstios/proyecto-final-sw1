@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -12,13 +12,16 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import SearchIcon from '@mui/icons-material/Search';
 import UpdateIcon from '@mui/icons-material/Update';
 
-export default function TableGenerica({ columnas, datos, handleOpenUpdate, handleOpenSearch, handleDelete }) {
+
+
+export default function TableGenerica({ columnasData, columnasTabla, datos, handleOpenUpdate, handleOpenSearch, handleDelete }) {
+
     return (
         <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableHead>
                     <TableRow>
-                        {columnas.map((columna) => (
+                        {columnasTabla.map((columna) => (
                             <TableCell>{columna}</TableCell>
                         ))}
                         <TableCell>Acciones</TableCell>
@@ -29,8 +32,10 @@ export default function TableGenerica({ columnas, datos, handleOpenUpdate, handl
                         <TableRow
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         >
-                            {Object.values(dato).map((propiedad) => (
-                                <TableCell align="left">{propiedad}</TableCell>
+                            {Object.entries(dato).map((llave) => (
+                                columnasData.includes(llave[0]) &&
+                                <TableCell align="left">{llave[1]}</TableCell>
+
                             ))}
                             <TableCell align="left">
                                 <IconButton aria-label="search" onClick={() => handleOpenSearch(true, dato._id)}>
