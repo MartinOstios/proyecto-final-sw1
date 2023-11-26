@@ -1,49 +1,24 @@
 import {createSlice} from '@reduxjs/toolkit';
 
-const initialState = [
-    {
-            name: "",
-            lastname: "",
-            email: "",
-            password: "",
-            active: true,
-            avatar: null,
-            address: "",
-            role: "",
-    }
-];
+const initialState = [];
 
 export const userSlice = createSlice({
     name: 'users',
     initialState,
     reducers: {
-        addUsers: (state, action) => {
-            const { name, lastname, email, password, active, avatar, address, role } = action.payload;
-            state.push({
-                name: name,
-                lastname: lastname,
-                email: email,
-                password: password,
-                avatar: avatar,
-                address: address,
-                role: role,
-            });
-        },
+        setUsers: (state, action) => action.payload,
+        addUsers: (state, action) => ({ ...state, ...action.payload}),
         editUsers: (state, action) => {
-            const { name, lastname, email, password, avatar, address } = action.payload;
-            const user = state.find(user => user.email === email);
-            if (user) {
-                user.name = name;
-                user.lastname = lastname;
-                user.email = email;
-                user.password = password;
-                user.avatar = avatar;
-                user.address = address;
+            console.log(action);
+            const userFound = state.find(user => user.email === action.payload.email);
+            if (userFound) {
+                state.splice(state.indexOf(userFound), 1);
             }
+
         }
     }
 });
 
-export const { addUsers, editUsers } = userSlice.actions;
+export const { setUsers, addUsers, editUsers } = userSlice.actions;
 
 export default userSlice.reducer;

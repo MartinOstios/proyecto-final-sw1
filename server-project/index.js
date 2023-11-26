@@ -39,6 +39,9 @@ const start = async () => {
 
 		app.use(cors());
 
+		// Servir a archivos estáticos en Express
+		app.use('/public', express.static(path.join(__dir, "uploads/avatar")));
+
 		app.use("/docs", docsRoutes);
 
 		app.use("/api/v1/users", userRoutes);
