@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { Button, InputLabel, Typography, Grid, TextField, Select, MenuItem, FormControl, Backdrop, CircularProgress } from '@mui/material'
 import TableGenerica from '../../../components/table/TableGenerico'
 import ModalGenerico from '../../../components/modal/ModalGenerico'
+import images from '../../../assets/images'
 
 import { useDispatch } from 'react-redux'
-import { setUsers, addUsers} from '../../../features/user/userSlice'
+import { setUsers, addUsers } from '../../../features/user/userSlice'
 
 import { Users } from '../../../api/user';
 import { Role } from '../../../api/role';
@@ -35,6 +36,9 @@ const User = () => {
     avatar: null,
     role: '',
   });
+
+  // ---- PREVISUALIZACIÓN DE IMÁGENES
+  const [imagen, setImagen] = useState(null);
 
 
   // ---- INICIO MODALES
@@ -81,6 +85,12 @@ const User = () => {
     if (event.target.name === 'avatar') {
       const file = event.target.files ? event.target.files[0] : null;
       setFormInfo((formInfo) => ({ ...formInfo, [event.target.name]: file }));
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagen(reader.result);
+      };
+
+      reader.readAsDataURL(file);
     } else {
       setFormInfo((formInfo) => ({ ...formInfo, [event.target.name]: event.target.value }));
     }
@@ -162,6 +172,8 @@ const User = () => {
     if (data) {
       dispatch(setUsers(data));
       setDataList(data);
+    } else {
+      enqueueSnackbar('No fue posible obtener la información', { variant: 'error' });
     }
     setOpenBackdrop(false);
   };
@@ -174,12 +186,12 @@ const User = () => {
   }
 
   return (
-    <div>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <h1>Usuarios</h1>
       <Button variant='contained' color='primary' onClick={() => handleOpenCreate(true)} style={{ margin: "2px 2px 10px 2px" }}>Crear usuario</Button>
       <TableGenerica
-        columnasData={['_id', 'name', 'email', 'password']}
-        columnasTabla={['ID', 'Nombre', 'Email', 'Contraseña']}
+        columnasData={['_id', 'name', 'lastname', 'email']}
+        columnasTabla={['ID', 'Nombre', 'Apellido', 'Correo']}
         datos={dataList}
         handleOpenSearch={handleOpenSearch}
         handleOpenUpdate={handleOpenUpdate}
@@ -187,9 +199,16 @@ const User = () => {
       />
 
       <ModalGenerico open={openCreate} handleOpen={handleOpenCreate}>
-        <h1 style={{ marginBottom: "40px" }}>Crear usuario </h1>
+        <h1 style={{ marginBottom: "15px" }}>Crear usuario </h1>
         <form>
           <Grid container spacing={2} display={'flex'}>
+            <Grid item xs={12} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+              <img src={imagen ? imagen : images.defaultImage} alt="Previsualización" style={{ width: '100px', height: '100px', borderRadius: '50%', marginBottom: 20, borderStyle: 'solid' }} />
+              <input type="file" style={{ display: 'none', marginTop: '10px' }} name='avatar' onChange={handleInputChange} id="fileInput" />
+              <label htmlFor="fileInput">
+                <Button variant="contained" component="span">Avatar</Button>
+              </label>
+            </Grid>
             <Grid item xs={6} >
               <TextField type='text' label="Nombres" variant="outlined" name='name' onChange={handleInputChange} />
             </Grid>
@@ -223,14 +242,9 @@ const User = () => {
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item xs={4} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-              <input type="file" style={{ display: 'none', marginTop: '10px' }} name='avatar' onChange={handleInputChange} id="fileInput" />
-              <label htmlFor="fileInput">
-                <Button variant="contained" component="span">Imagen</Button>
-              </label>
-            </Grid>
+
           </Grid>
-          <div style={{ marginTop: '25px', marginLeft: "150px" }}>
+          <div style={{ display: 'flex', justifyContent: 'center', marginTop: 30 }}>
             <Button variant="contained" color="primary" onClick={() => handleSubmit('create')}>
               Crear usuario
             </Button>
@@ -242,6 +256,13 @@ const User = () => {
         <h1 style={{ marginBottom: "40px" }}>Actualizar usuario</h1>
         <form>
           <Grid container spacing={2} display={'flex'}>
+            <Grid item xs={12} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+              <img src={imagen ? imagen : selectedData?.avatarClient} alt="Previsualización" style={{ width: '100px', height: '100px', borderRadius: '50%', marginBottom: 20, borderStyle: 'solid' }} />
+              <input type="file" style={{ display: 'none', marginTop: '10px' }} name='avatar' onChange={handleInputChange} id="fileInput" />
+              <label htmlFor="fileInput">
+                <Button variant="contained" component="span">Avatar</Button>
+              </label>
+            </Grid>
             <Grid item xs={6} >
               <TextField type='text' label="Nombres" variant="outlined" defaultValue={selectedData?.name} name='name' onChange={handleInputChange} />
             </Grid>
@@ -269,14 +290,8 @@ const User = () => {
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item xs={4} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-              <input type="file" style={{ display: 'none', marginTop: '10px' }} name='avatar' onChange={handleInputChange} id="fileInput" />
-              <label htmlFor="fileInput">
-                <Button variant="contained" component="span">Imagen</Button>
-              </label>
-            </Grid>
           </Grid>
-          <div style={{ marginTop: '25px', marginLeft: "150px" }}>
+          <div style={{ display: 'flex', justifyContent: 'center', marginTop: 30 }}>
             <Button variant="contained" color="primary" onClick={() => handleSubmit('edit')} >
               Actualizar usuario
             </Button>
@@ -285,27 +300,28 @@ const User = () => {
       </ModalGenerico>
 
       <ModalGenerico open={openSearch} handleOpen={handleOpenSearch}>
-        <h1 style={{ marginBottom: "40px" }}>Mostrar Usuario </h1>
-        <Grid item xs={5} md={5}>
-          <img src={selectedData?.avatarClient} alt={selectedData?.name} style={{ width: "100%", borderRadius: "10px", margin: "0" }}></img>
-          <h3>avatar</h3>
+        <h1 style={{ marginBottom: "20px" }}>Mostrar Usuario </h1>
+        <Grid item xs={12} md={12}>
+          <img src={selectedData?.avatarClient} alt={selectedData?.name} style={{ maxWidth: "200px", borderRadius: "10px", margin: "0" }}></img>
         </Grid>
         <Grid item xs={7} md={7}>
           <Typography id="userName" variant="h6" component="h2">
-            {selectedData?.name}
-            <h3>Nombre</h3>
+            <b>Nombre: </b>{selectedData?.name}
           </Typography>
           <Typography id="userLastname" variant="h6" component="h2">
-            {selectedData?.lastname}
-            <h3>Apellido</h3>
+            <b>Apellido: </b>{selectedData?.lastname}
+          </Typography>
+          <Typography id="userEmail" variant="h6" component="h2">
+            <b>Correo: </b>{selectedData?.email}
           </Typography>
           <Typography id="userAddress" variant="h6" component="h2">
-            {selectedData?.address}
-            <h3>Dirección</h3>
+            <b>Dirección: </b>{selectedData?.address ? 'Dirección' : 'No definido'}
+          </Typography>
+          <Typography id="userActive" variant="h6" component="h2">
+            <b>Activo: </b>{selectedData?.active ? 'Sí' : 'No'}
           </Typography>
           <Typography id="userRole" variant="h6" component="h2">
-            {selectedData?.role}
-            <h3>Rol</h3>
+            <b>Rol: </b>{selectedData?.role ? selectedData.role.name : 'No definido'}
           </Typography>
         </Grid>
       </ModalGenerico>
