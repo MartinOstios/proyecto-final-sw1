@@ -35,7 +35,7 @@ export class Users {
             method: "PATCH",
             body: data,
             headers: {
-                'Authorization': `Bearer ${this.getAccessToken()}`,
+                'Authorization': `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjY1NWZhYzVjYzE1MGJjNDEzYmQ0NDM3MyIsIm5hbWUiOiJNYXJ0aW5PcyIsImxhc3RuYW1lIjoiT3N0aW9zIiwiZW1haWwiOiJtYXJ0aW4ub3N0aW9zYUBhdXRvbm9tYS5lZHUuY28iLCJhdmF0YXIiOiJ1cGxvYWRzL2F2YXRhci9kZWZhdWx0LnBuZyIsImFkZHJlc3MiOm51bGwsInJvbGUiOm51bGwsImlhdCI6MTcwMTAxNjUyMiwiZXhwIjoxNzAxMTAyOTIyfQ.GzGBwUC-sf1POcZKCWtdYMF2E5qvIKGPtYPffhp9UyY`,
             }
         };
         try {
@@ -57,7 +57,7 @@ export class Users {
             method: "DELETE",
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${this.getAccessToken()}`,
+                'Authorization': `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjY1NWZhYzVjYzE1MGJjNDEzYmQ0NDM3MyIsIm5hbWUiOiJNYXJ0aW5PcyIsImxhc3RuYW1lIjoiT3N0aW9zIiwiZW1haWwiOiJtYXJ0aW4ub3N0aW9zYUBhdXRvbm9tYS5lZHUuY28iLCJhdmF0YXIiOiJ1cGxvYWRzL2F2YXRhci9kZWZhdWx0LnBuZyIsImFkZHJlc3MiOm51bGwsInJvbGUiOm51bGwsImlhdCI6MTcwMTAxNjUyMiwiZXhwIjoxNzAxMTAyOTIyfQ.GzGBwUC-sf1POcZKCWtdYMF2E5qvIKGPtYPffhp9UyY`,
             }
         };
         try {

@@ -84,7 +84,7 @@ const User = () => {
     // Pasar información a FormData (porque hay imágenes)
     const formData = new FormData();
     for (const [key, value] of Object.entries(formInfo)) {
-      if (value != "" && value) {
+      if (value !== "" && value) {
         formData.append(key, value);
       }
     }
@@ -103,7 +103,7 @@ const User = () => {
     // Pasar información a FormData (porque hay imágenes)
     const formData = new FormData();
     for (const [key, value] of Object.entries(formInfo)) {
-      if (value != "" && value) {
+      if (value !== "" && value) {
         formData.append(key, value);
       }
     }
@@ -232,8 +232,7 @@ const User = () => {
                   label="Rol"
                   variant="outlined"
                   name="role"
-                  defaultValue={selectedData?.role}
-                  value={formInfo.role}
+                  value={selectedData?.role}
                   onChange={handleInputChange}
                 >
                   {roles.map((role) => (
@@ -262,7 +261,7 @@ const User = () => {
       <ModalGenerico open={openSearch} handleOpen={handleOpenSearch}>
         <h1 style={{ marginBottom: "40px" }}>Mostrar Usuario </h1>
         <Grid item xs={5} md={5}>
-          <img src={selectedData?.avatar} alt={selectedData?.name} style={{ width: "100%", borderRadius: "10px", margin: "0" }}></img>
+          <img src={selectedData?.avatarClient} alt={selectedData?.name} style={{ width: "100%", borderRadius: "10px", margin: "0" }}></img>
           <h3>avatar</h3>
         </Grid>
         <Grid item xs={7} md={7}>

@@ -14,7 +14,11 @@ export const userSlice = createSlice({
             if (userFound) {
                 state.splice(state.indexOf(userFound), 1);
             }
-
+        },
+        removeUsers: (state, action) => {
+            console.log(state, action);
+            state.filter(user => user.email === action.email);
+            console.log(state, action);
         }
     }
 });
