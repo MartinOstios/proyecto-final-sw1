@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -15,7 +15,6 @@ import UpdateIcon from '@mui/icons-material/Update';
 
 
 export default function TableGenerica({ columnasData, columnasTabla, datos, handleOpenUpdate, handleOpenSearch, handleDelete }) {
-
     return (
         <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -29,6 +28,7 @@ export default function TableGenerica({ columnasData, columnasTabla, datos, hand
                 </TableHead>
                 <TableBody>
                     {datos.map((dato) => (
+                        
                         <TableRow
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         >
