@@ -7,22 +7,19 @@ export const userSlice = createSlice({
     initialState,
     reducers: {
         setUsers: (state, action) => action.payload,
-        addUsers: (state, action) => ({ ...state, ...action.payload}),
+        addUsers: (state, action) => state.concat(action.payload),
         editUsers: (state, action) => {
-            console.log(action);
             const userFound = state.find(user => user.email === action.payload.email);
+            console.log(userFound);
+            console.log(state.indexOf(userFound));
             if (userFound) {
                 state.splice(state.indexOf(userFound), 1);
             }
         },
-        removeUsers: (state, action) => {
-            console.log(state, action);
-            state.filter(user => user.email === action.email);
-            console.log(state, action);
-        }
+        removeUsers: (state, action) => state.filter(user => user.email !== action.payload)
     }
 });
 
-export const { setUsers, addUsers, editUsers } = userSlice.actions;
+export const { setUsers, addUsers, editUsers, removeUsers } = userSlice.actions;
 
 export default userSlice.reducer;

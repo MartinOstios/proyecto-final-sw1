@@ -4,11 +4,12 @@ import TableGenerica from '../../../components/table/TableGenerico'
 import ModalGenerico from '../../../components/modal/ModalGenerico'
 import images from '../../../assets/images'
 
-import { useDispatch } from 'react-redux'
-import { setUsers, addUsers } from '../../../features/user/userSlice'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { Users } from '../../../api/user';
 import { Role } from '../../../api/role';
+
+import { createUser, deleteUser, setUser, updateUser } from '../../../actions/users'
 
 
 import { useSnackbar } from 'notistack'
@@ -16,13 +17,11 @@ import { useSnackbar } from 'notistack'
 
 const User = () => {
   const { enqueueSnackbar } = useSnackbar();
+  const data = useSelector((state) => state.users);
 
-
-  const userApi = new Users();
   const roleApi = new Role();
 
   const dispatch = useDispatch();
-  const [dataList, setDataList] = useState([]);
   const [openUpdate, setOpenUpdate] = useState(false);
   const [openSearch, setOpenSearch] = useState(false);
   const [openCreate, setOpenCreate] = useState(false);
@@ -59,22 +58,8 @@ const User = () => {
     setOpenCreate(state);
   }
 
-  const handleDelete = async (dataId) => {
-    setOpenBackdrop(true);
-    const data = findDataById(dataId);
-    const res = await userApi.deleteUser(data.email);
-
-    if (res.status === 200) {
-      enqueueSnackbar(res.message, { variant: 'success' });
-      getData();
-    } else {
-      enqueueSnackbar(`Error: ${res.message}`, { variant: 'error' });
-    }
-    setOpenBackdrop(false);
-  }
-
   const findDataById = (dataId) => {
-    return dataList.find((data) => data._id === dataId);
+    return data.find((data) => data._id === dataId);
   }
 
   // ---------- FIN MODALES
@@ -123,32 +108,35 @@ const User = () => {
   }
 
   const handleCreate = async (formData) => {
-    // Llamar API
     setOpenCreate(false);
-    const res = await userApi.createUser(formData);
-    // Llamar al Store
+    const res = await createUser(formData, dispatch);
     if (res.status === 200) {
-      dispatch(addUsers(res));
       enqueueSnackbar(res.message, { variant: 'success' });
-      await getData();
     } else {
       enqueueSnackbar(`Error: ${res.message}`, { variant: 'error' });
     }
   }
 
   const handleEdit = async (formData) => {
-    // Llamar a la API
     setOpenUpdate(false);
-    const res = await userApi.updateUser(selectedData.email, formData);
-    console.log(res)
-
-    // Llamar al Store
-    if (res.status === 200) {
+    const res = await updateUser(selectedData.email, formData, dispatch);
+    if (res && res.status === 200) {
       enqueueSnackbar(res.message, { variant: 'success' });
-      await getData();
     } else {
       enqueueSnackbar(`Error: ${res.message}`, { variant: 'error' });
     }
+  }
+
+  const handleDelete = async (dataId) => {
+    setOpenBackdrop(true);
+    const data = findDataById(dataId);
+    const res = await deleteUser(data.email, dispatch);
+    if (res.status === 200) {
+      enqueueSnackbar(res.message, { variant: 'success' });
+    } else {
+      enqueueSnackbar(`Error: ${res.message}`, { variant: 'error' });
+    }
+    setOpenBackdrop(false);
   }
 
   // ---------- FIN HANDLE SUBMIT
@@ -164,15 +152,12 @@ const User = () => {
   useEffect(() => {
     getData();
     getRoles();
-  }, [setDataList, setRoles]);
+  }, []);
 
   const getData = async () => {
     setOpenBackdrop(true);
-    const data = await userApi.showUsers();
-    if (data) {
-      dispatch(setUsers(data));
-      setDataList(data);
-    } else {
+    const data = await setUser(dispatch);
+    if (!data) {
       enqueueSnackbar('No fue posible obtener la información', { variant: 'error' });
     }
     setOpenBackdrop(false);
@@ -192,7 +177,7 @@ const User = () => {
       <TableGenerica
         columnasData={['_id', 'name', 'lastname', 'email']}
         columnasTabla={['ID', 'Nombre', 'Apellido', 'Correo']}
-        datos={dataList}
+        datos={data}
         handleOpenSearch={handleOpenSearch}
         handleOpenUpdate={handleOpenUpdate}
         handleDelete={handleDelete}
