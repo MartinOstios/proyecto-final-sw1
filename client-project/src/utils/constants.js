@@ -9,7 +9,8 @@ export const ENV = {
         USERS: "users",
         AUTH: "auth",
         SERVICES: "services",
-        ROLES: "roles"
+        ROLES: "roles",
+        CATEGORIES: "categories",
     },
     JWT : {
         ACCESS: "access"
