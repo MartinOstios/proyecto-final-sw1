@@ -18,7 +18,6 @@ import { useSnackbar } from 'notistack'
 const User = () => {
   const { enqueueSnackbar } = useSnackbar();
   const data = useSelector((state) => state.users);
-
   const roleApi = new Role();
 
   const dispatch = useDispatch();
@@ -317,7 +316,6 @@ const User = () => {
       >
         <CircularProgress color="inherit" />
       </Backdrop>
-
     </div>
   )
 }
