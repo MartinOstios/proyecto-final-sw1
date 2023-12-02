@@ -1,5 +1,5 @@
 import { Users } from "../api/user"
-import { setUsers, addUsers, editUsers, removeUsers } from '../features/slices/userSlice';
+import { setUsers, addUsers, editUsers, removeUsers } from '../features/user/userSlice';
 const userController = new Users();
 
 
