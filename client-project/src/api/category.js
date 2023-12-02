@@ -1,19 +1,20 @@
 import { ENV } from "../utils/constants";
 const { BASE_API, API_ROUTES } = ENV;
 
-export class Users {
+export class Category {
     // http://localhost:3100/api/v1
     baseApi = BASE_API;
-    userUrl = `${BASE_API}/${API_ROUTES.USERS}`
+    categoryUrl = `${BASE_API}/${API_ROUTES.CATEGORIES}`
 
-    // http://localhost:3100/api/v1/users/new
-    createUser = async (data) => {
-        const url = `${this.userUrl}/new`;
+    // http://localhost:3100/api/v1/categories/new
+    createCategory = async (data) => {
+        const url = `${this.categoryUrl}/new`;
         const params = {
             method: "POST",
-            body: data,
+            body: JSON.stringify(data),
             headers: {
-                'Authorization': `Bearer ${this.getAccessToken()}`,
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjY1NjhiZGNhYTdjOTgzODQ2MjE1ZDZlNyIsIm5hbWUiOiJNYXJ0aW4iLCJsYXN0bmFtZSI6Ik9zdGlvcyIsImVtYWlsIjoibWFydGluLm9zdGlvc2FAYXV0b25vbWEuZWR1LmNvIiwiYWRkcmVzcyI6bnVsbCwicm9sZSI6bnVsbCwiaWF0IjoxNzAxNTUwMzU0LCJleHAiOjE3MDE2MzY3NTR9.al36iDamyZPANXftqX_nXH9hOP5vvpGq0ziamqVjNuQ`,
             }
         };
         try {
@@ -28,14 +29,15 @@ export class Users {
         }
     }
 
-    // http://localhost:3100/api/v1/users/mail
-    updateUser = async (email, data) => {
-        const url = `${this.userUrl}/${email}`;
+    // http://localhost:3100/api/v1/categories/id
+    updateCategory = async (id, data) => {
+        const url = `${this.categoryUrl}/${id}`;
         const params = {
             method: "PATCH",
-            body: data,
+            body: JSON.stringify(data),
             headers: {
-                'Authorization': `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjY1NjhiZDhkYTdjOTgzODQ2MjE1ZDZiYiIsIm5hbWUiOiJNYXJ0aW4iLCJsYXN0bmFtZSI6Ik9zdGlvcyIsImVtYWlsIjoibWFydGluLm9zdGlvc2FAYXV0b25vbWEuZWR1LmNvIiwiYWRkcmVzcyI6bnVsbCwicm9sZSI6bnVsbCwiaWF0IjoxNzAxMzYzMDkyLCJleHAiOjE3MDE0NDk0OTJ9.x7ig1T-BbFHYTUIIznlu5FGuaI4MM2IxHdlGonyXl-Y`,
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjY1NjhiZGNhYTdjOTgzODQ2MjE1ZDZlNyIsIm5hbWUiOiJNYXJ0aW4iLCJsYXN0bmFtZSI6Ik9zdGlvcyIsImVtYWlsIjoibWFydGluLm9zdGlvc2FAYXV0b25vbWEuZWR1LmNvIiwiYWRkcmVzcyI6bnVsbCwicm9sZSI6bnVsbCwiaWF0IjoxNzAxNTUwMzU0LCJleHAiOjE3MDE2MzY3NTR9.al36iDamyZPANXftqX_nXH9hOP5vvpGq0ziamqVjNuQ`,
             }
         };
         try {
@@ -50,14 +52,14 @@ export class Users {
         }
     }
 
-    // http://localhost:3100/api/v1/users/mail
-    deleteUser = async (mail) => {
-        const url = `${this.userUrl}/${mail}`;
+    // http://localhost:3100/api/v1/categories/id
+    deleteCategory = async (id) => {
+        const url = `${this.categoryUrl}/${id}`;
         const params = {
             method: "DELETE",
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjY1NjhiZDhkYTdjOTgzODQ2MjE1ZDZiYiIsIm5hbWUiOiJNYXJ0aW4iLCJsYXN0bmFtZSI6Ik9zdGlvcyIsImVtYWlsIjoibWFydGluLm9zdGlvc2FAYXV0b25vbWEuZWR1LmNvIiwiYWRkcmVzcyI6bnVsbCwicm9sZSI6bnVsbCwiaWF0IjoxNzAxMzYzMDkyLCJleHAiOjE3MDE0NDk0OTJ9.x7ig1T-BbFHYTUIIznlu5FGuaI4MM2IxHdlGonyXl-Y`,
+                'Authorization': `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjY1NjhiZGNhYTdjOTgzODQ2MjE1ZDZlNyIsIm5hbWUiOiJNYXJ0aW4iLCJsYXN0bmFtZSI6Ik9zdGlvcyIsImVtYWlsIjoibWFydGluLm9zdGlvc2FAYXV0b25vbWEuZWR1LmNvIiwiYWRkcmVzcyI6bnVsbCwicm9sZSI6bnVsbCwiaWF0IjoxNzAxNTUwMzU0LCJleHAiOjE3MDE2MzY3NTR9.al36iDamyZPANXftqX_nXH9hOP5vvpGq0ziamqVjNuQ`,
             }
         };
         try {
@@ -72,9 +74,9 @@ export class Users {
         }
     }
 
-    // http://localhost:3100/api/v1/users
-    showUsers = async () => {
-        const url = `${this.userUrl}`;
+    // http://localhost:3100/api/v1/categories
+    showCategories = async () => {
+        const url = `${this.categoryUrl}`;
         const params = {
             method: "GET",
             headers: {
