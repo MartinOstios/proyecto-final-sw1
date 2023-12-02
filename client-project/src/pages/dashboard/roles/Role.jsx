@@ -10,8 +10,6 @@ import { useSnackbar } from 'notistack'
 const Roles = () => {
   const { enqueueSnackbar } = useSnackbar();
   const data = useSelector((state) => state.roles);
-  console.log(data)
-  const roleApi = new Role();
   const dispatch = useDispatch();
   const [openUpdate, setOpenUpdate] = useState(false);
   const [openSearch, setOpenSearch] = useState(false);
@@ -59,30 +57,30 @@ const Roles = () => {
 
   const handleSubmit = async (form) => {
     setOpenBackdrop(true);
-    // Pasar información a FormData 
-    const formData = new FormData();
+
+    const filterData = {};
     for (const [key, value] of Object.entries(formInfo)) {
       if (value !== "" && value) {
-        formData.append(key, value);
-        console.log(key, value)
-        console.log(formData.get(key), formData.get(value))
+        filterData[key] = value;
       }
     }
 
+    console.log(filterData);
     if (form === 'create') {
-      await handleCreate(formData)
+      await handleCreate(filterData)
     }
 
     if (form === 'edit') {
-      await handleEdit(formData);
+      await handleEdit(filterData);
     }
+
     setOpenBackdrop(false);
   }
 
-  const handleCreate = async (formData) => {
+  const handleCreate = async (data) => {
     // Llamar API
     setOpenCreate(false);
-    const res = await createRole(formData, dispatch);
+    const res = await createRole(data, dispatch);
     // Llamar al Store
     if (res.status === 200) {
       enqueueSnackbar(res.message, { variant: 'success' });
@@ -91,12 +89,10 @@ const Roles = () => {
     }
   }
 
-  const handleEdit = async (formData) => {
+  const handleEdit = async (data) => {
     // Llamar a la API
     setOpenUpdate(false);
-    console.log(selectedData._id)
-    const res = await updateRole(selectedData._id, formData, dispatch);
-    console.log(res)
+    const res = await updateRole(selectedData._id, data, dispatch);
     // Llamar al Store
     if (res && res.status === 200) {
       enqueueSnackbar(res.message, { variant: 'success' });
@@ -107,9 +103,7 @@ const Roles = () => {
 
   const handleDelete = async (dataId) => {
     setOpenBackdrop(true);
-    const data = findDataById(dataId);
     const res = await deleteRole(dataId, dispatch);
-
     if (res.status === 200) {
       enqueueSnackbar(res.message, { variant: 'success' });
       getData();
@@ -128,7 +122,7 @@ const Roles = () => {
 
   const getData = async () => {
     setOpenBackdrop(true);
-    const data = setRole(dispatch);
+    const data = await setRole(dispatch);
     if (!data) {
       enqueueSnackbar('No fue posible obtener la información', { variant: 'error' });
     }
