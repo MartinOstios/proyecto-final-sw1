@@ -11,6 +11,7 @@ export const ENV = {
         SERVICES: "services",
         ROLES: "roles",
         CATEGORIES: "categories",
+        SERVICES: "services",
     },
     JWT : {
         ACCESS: "access"
