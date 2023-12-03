@@ -11,7 +11,7 @@ const initialState = {
         avatar: null
     },
     access: null,
-    is_authenticated: null,
+    is_authenticated: false,
 };
 
 
@@ -21,14 +21,21 @@ export const authSlice = createSlice({
     initialState: initialState,
     reducers: {
         setUser: (state, action) => {
-            return action.payload;
+            state.access = action.payload.access;
+            state.is_authenticated = true;
+            state.user = action.payload.user;
         },
+        authenticate: (state, action) => {
+            state.access = localStorage.getItem('access');
+            state.is_authenticated = true;
+            state.user = action.payload;
+        },  
         resetUser: (state, action) => {
             return initialState;
         }
     }
 });
 
-export const {setUser, resetUser} = authSlice.actions;
+export const {setUser, resetUser, authenticate} = authSlice.actions;
 
 export default authSlice.reducer;

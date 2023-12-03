@@ -23,14 +23,14 @@ const UserSchema = Schema({
 		default: "uploads/avatar/default.png",
 	},
 	address: {
-		type: Schema.Types.ObjectId, // TODO: <Schema.Types.Mixed> para mostrar el objeto completo
+		type: Schema.Types.ObjectId, 
 		ref: Address,
 		default: null,
 	},
 	role: {
 		type: Schema.Types.ObjectId,
 		ref: Role,
-		default: null,
+		default: "656b99e3fdbe12763c8f7af9",
 	},
 });
 export default model("User", UserSchema, "users");
