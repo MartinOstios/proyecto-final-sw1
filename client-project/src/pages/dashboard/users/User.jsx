@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import { Button, InputLabel, Typography, Grid, TextField, Select, MenuItem, FormControl, Backdrop, CircularProgress } from '@mui/material'
+import { Button, InputLabel, Typography, Grid, TextField, Select, MenuItem, FormControl, Backdrop, CircularProgress, IconButton } from '@mui/material'
 import TableGenerica from '../../../components/table/TableGenerico'
 import ModalGenerico from '../../../components/modal/ModalGenerico'
 import images from '../../../assets/images'
 
 import { useDispatch, useSelector } from 'react-redux'
 
-import { Users } from '../../../api/user';
 import { Role } from '../../../api/role';
 
 import { createUser, deleteUser, setUser, updateUser } from '../../../actions/users'
-
 
 import { useSnackbar } from 'notistack'
 
@@ -177,9 +175,15 @@ const User = () => {
       <h1>Usuarios</h1>
       <Button variant='contained' color='primary' onClick={() => handleOpenCreate(true)} style={{ margin: "2px 2px 10px 2px" }}>Crear usuario</Button>
       <TableGenerica
-        columnasData={['_id', 'name', 'lastname', 'email']}
-        columnasTabla={['ID', 'Nombre', 'Apellido', 'Correo']}
-        datos={data}
+        columns={
+          [
+            { field: '_id', headerName: 'ID', width: 100 },
+            { field: 'name', headerName: 'Nombre', width: 200 },
+            { field: 'lastname', headerName: 'Apellido', width: 200 },
+            { field: 'email', headerName: 'Correo', width: 200 }
+          ]
+        }
+        rows={data}
         handleOpenSearch={handleOpenSearch}
         handleOpenUpdate={handleOpenUpdate}
         handleDelete={handleDelete}

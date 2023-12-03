@@ -99,6 +99,7 @@ const App = () => {
               <>
                 <Route path="/dashboard" element={<Dashboard />}>
                   <Route index element={<First />} />
+                  <Route path="/dashboard/profile" element={<Profile />} />
                   {user.role.name === 'Administrador' ?
                     <>
                       <Route path="/dashboard/users" element={<User />} />
@@ -108,7 +109,6 @@ const App = () => {
                       <Route path="/dashboard/clients" element={<Client />} />
                       <Route path="/dashboard/roles" element={<Role />} />
                       <Route path="/dashboard/reports" element={<Report />} />
-                      <Route path="/dashboard/profile" element={<Profile />} />
                       <Route path="/dashboard/providers" element={<Provider />} />
                     </>
                     : <></>}

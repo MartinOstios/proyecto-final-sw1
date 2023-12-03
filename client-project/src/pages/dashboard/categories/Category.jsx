@@ -131,15 +131,19 @@ const Categories = () => {
       <h1>Categorias</h1>
       <Button variant='contained' color='primary' onClick={() => handleOpenCreate(true)} style={{ margin: "2px 2px 10px 2px" }}>Crear Categoria</Button>
       <TableGenerica
-        columnasData={['_id', 'name', 'description']}
-        columnasTabla={['ID', 'Nombre', 'Descripción']}
-        datos={data}
+        columns={
+          [
+            { field: '_id', headerName: 'ID', width: 100 },
+            { field: 'name', headerName: 'Nombre', width: 200 }
+          ]
+        }
+        rows={data}
         handleOpenSearch={handleOpenSearch}
         handleOpenUpdate={handleOpenUpdate}
         handleDelete={handleDelete}
       />
 
-<ModalGenerico open={openCreate} handleOpen={handleOpenCreate}>
+      <ModalGenerico open={openCreate} handleOpen={handleOpenCreate}>
         <h1 style={{ marginBottom: "15px" }}>Crear Categoria </h1>
         <form>
           <Grid container spacing={2} display={'flex'}>
