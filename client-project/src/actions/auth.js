@@ -1,5 +1,5 @@
 import { Auth } from "../api/auth"
-import { setUser, authenticate, resetUser } from '../features/auth/authSlice';
+import { setUser, setNoActiveUser, authenticate, resetUser, registerUser } from '../features/auth/authSlice';
 const authController = new Auth();
 
 
@@ -7,7 +7,14 @@ export const login = async (data, dispatch) => {
     try {
         const result = await authController.login(data);
         if (result && result.user) {
-            dispatch(setUser(result));
+            if (result.user.active){
+                console.log('Entró al dispatch normal')
+                dispatch(setUser(result));
+            }else{
+                console.log('Entró al otro dispatch')
+                dispatch(setNoActiveUser(result));
+            }
+            
         }
         return result;
     } catch (error) {
@@ -16,9 +23,12 @@ export const login = async (data, dispatch) => {
 }
 
 
-export const register = async (data) => {
+export const register = async (data, dispatch) => {
     try {
         const result = await authController.register(data);
+        if (result && result.user){
+            dispatch(registerUser(result.user));
+        }
         return result;
     } catch (error) {
         return null;
@@ -43,4 +53,15 @@ export const authenticateUser = async (dispatch) => {
 export const logout = (dispatch) => {
     authController.logout();
     dispatch(resetUser());
+}
+
+
+export const generate = async (data) => {
+    const result = await authController.generate(data);
+    return result;
+}
+
+export const activate = async (data) => {
+    const result = await authController.activate(data);
+    return result;
 }

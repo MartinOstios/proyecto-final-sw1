@@ -95,7 +95,7 @@ const App = () => {
 
 
             </Route>
-            {isAuthenticated &&
+            {isAuthenticated && user.active &&
               <>
                 <Route path="/dashboard" element={<Dashboard />}>
                   <Route index element={<First />} />

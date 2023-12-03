@@ -17,6 +17,7 @@ const Register = () => {
     name: '',
     lastname: '',
     email: '',
+    phone_number: '',
     password: '',
     policies: false
   });
@@ -36,11 +37,12 @@ const Register = () => {
     }
 
     setOpenBackdrop(true);
-    const res = await register(registerData);
+    const res = await register(registerData, dispatch);
     console.log(res);
     if(res && res.user) {
       enqueueSnackbar(res.message, { variant: 'success' });
-      navigate('/login');
+
+      navigate('/activate');
     } else {
       enqueueSnackbar(`Error: ${res?.message}`, { variant: 'error' });
     }
@@ -104,6 +106,16 @@ const Register = () => {
               label="Correo"
               type='email'
               name='email'
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <TextField
+              required
+              id="outlined-required"
+              label="Número de celular"
+              type='text'
+              name='phone_number'
               onChange={handleChange}
             />
           </div>

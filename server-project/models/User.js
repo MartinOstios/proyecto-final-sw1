@@ -27,10 +27,16 @@ const UserSchema = Schema({
 		ref: Address,
 		default: null,
 	},
+	phone_number: {
+		type: String
+	},
 	role: {
 		type: Schema.Types.ObjectId,
 		ref: Role,
 		default: "656b99e3fdbe12763c8f7af9",
 	},
+	tempCode: {
+		type: String
+	}
 });
 export default model("User", UserSchema, "users");

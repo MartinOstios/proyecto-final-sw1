@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, InputLabel, Typography, Grid, TextField, Select, MenuItem, FormControl, Backdrop, CircularProgress, IconButton } from '@mui/material'
+import { Button, InputLabel, Typography, Grid, TextField, Select, MenuItem, FormControl, Backdrop, CircularProgress, IconButton, Chip } from '@mui/material'
 import TableGenerica from '../../../components/table/TableGenerico'
 import ModalGenerico from '../../../components/modal/ModalGenerico'
 import images from '../../../assets/images'
@@ -29,11 +29,12 @@ const User = () => {
     lastname: '',
     email: '',
     password: '',
+    active: false,
     avatar: null,
     role: '',
   });
 
-  const { role } = formInfo;
+  const { role, active } = formInfo;
 
   // ---- PREVISUALIZACIÓN DE IMÁGENES
   const [imagen, setImagen] = useState(null);
@@ -91,10 +92,12 @@ const User = () => {
     // Pasar información a FormData (porque hay imágenes)
     const formData = new FormData();
     for (const [key, value] of Object.entries(formInfo)) {
-      if (value !== "" && value) {
+      if (value !== "") {
         formData.append(key, value);
       }
     }
+
+
 
     if (form === 'create') {
       await handleCreate(formData)
@@ -177,10 +180,14 @@ const User = () => {
       <TableGenerica
         columns={
           [
-            { field: '_id', headerName: 'ID', width: 100 },
             { field: 'name', headerName: 'Nombre', width: 200 },
             { field: 'lastname', headerName: 'Apellido', width: 200 },
-            { field: 'email', headerName: 'Correo', width: 200 }
+            { field: 'email', headerName: 'Correo', width: 200 },
+            {
+              field: 'active', headerName: 'Activo', width: 150, renderCell: (params) => (
+                params.row.active ? <Chip label="Activo" color="primary" /> : <Chip label="Inactivo" color="error" />
+              )
+            }
           ]
         }
         rows={data}
@@ -278,6 +285,25 @@ const User = () => {
                       {role.name}
                     </MenuItem>
                   ))}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={6}>
+              <FormControl sx={{ width: '100%' }}>
+                <InputLabel id="demo-simple-select-label-2">Activo</InputLabel>
+                <Select
+                  label="Activo"
+                  variant="outlined"
+                  name="active"
+                  value={active}
+                  onChange={handleInputChange}
+                >
+                    <MenuItem key={true} value={true}>
+                      Activo
+                    </MenuItem>
+                    <MenuItem key={false} value={false}>
+                      Inactivo
+                    </MenuItem>
                 </Select>
               </FormControl>
             </Grid>

@@ -23,10 +23,16 @@ const Login = () => {
 
   const handleSubmit = async () => {
     setOpenBackdrop(true);
-    const res = await login(loginData, dispatch);;
+    const res = await login(loginData, dispatch);
     if (res.user) {
-      enqueueSnackbar(`${res.user.name} iniciaste sesión correctamente`, { variant: 'success' });
-      navigate('/dashboard');
+      if (res.user.active) {
+        enqueueSnackbar(`${res.user.name} iniciaste sesión correctamente`, { variant: 'success' });
+        navigate('/dashboard');
+      } else{
+        enqueueSnackbar(`Para iniciar sesión debe activar su cuenta`, { variant: 'info' });
+        navigate('/activate');
+      }
+
     } else {
       enqueueSnackbar(`El correo o la contraseña son incorrectos`, { variant: 'error' });
     }
