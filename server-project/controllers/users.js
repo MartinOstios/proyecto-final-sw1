@@ -281,7 +281,7 @@ const LOGIN = async (req, res) => {
 const GETME = async (req, res) => {
     try {
         const { _id } = req.user._doc;
-        const userFind = await User.findById(_id);
+        const userFind = await User.findById(_id).populate('role');
         res.status(200).json(userFind);
     } catch (err) {
         res.status(400).json({ message: err.message });

@@ -20,9 +20,11 @@ import ImportContactsIcon from '@mui/icons-material/ImportContacts';
 
 import Toolbar from '@mui/material/Toolbar';
 import { DashboardNavbar } from '../../components/dashboardNavbar/DashboardNavbar';
+import { useSelector } from 'react-redux';
 const drawerWidth = 240;
 
 const Dashboard = () => {
+  const authUser = useSelector((state) => state.auth.user);
   return (
     <>
       <Box sx={{ display: 'flex' }}>
@@ -40,13 +42,13 @@ const Dashboard = () => {
           anchor="left"
         >
           <Toolbar >
-            {/*  <div style={{ width: '30%', marginTop: 10 }}>
-              <img src={actualUser?.avatar} alt="" width={'100%'} />
+            <div style={{ width: '30%', marginTop: 10 }}>
+              <img src={authUser?.avatarClient} alt="" style={{ width: '50px', height: '50px', borderRadius: '50%'}} />
             </div>
             <div style={{ marginLeft: 10, display: 'flex', flexDirection: 'column' }}>
-              <p style={{ fontSize: 20 }}><b>{actualUser?.firstname}</b></p>
-              <span style={{ fontSize: 15 }}>{actualUser?.rol.name}</span>
-            </div> */}
+              <p style={{ fontSize: 20, margin: 0 }}><b>{authUser?.name}</b></p>
+              <span style={{ fontSize: 15 }}>{authUser?.role?.name}</span>
+            </div>
 
           </Toolbar>
           <Divider />

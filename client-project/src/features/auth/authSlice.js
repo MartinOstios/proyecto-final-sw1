@@ -26,6 +26,7 @@ export const authSlice = createSlice({
             state.user = action.payload.user;
         },
         authenticate: (state, action) => {
+            state.access = localStorage.getItem('access');
             state.is_authenticated = true;
             state.user = action.payload;
         },  

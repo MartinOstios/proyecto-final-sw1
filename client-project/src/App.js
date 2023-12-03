@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { BrowserRouter, Navigate, Route, Routes, useNavigate } from 'react-router-dom'
+import { BrowserRouter, Navigate, Route, Routes} from 'react-router-dom'
 import Dashboard from './pages/dashboard/Dashboard'
 import First from './pages/dashboard/first/First'
 import User from './pages/dashboard/users/User'
@@ -19,13 +19,12 @@ import { SnackbarProvider } from 'notistack';
 import { useDispatch, useSelector } from 'react-redux'
 
 import { authenticateUser } from './actions/auth'
-import WebRoutes from './routes/WebRoutes'
 
 import Login from './pages/public/login/Login'
 import Register from './pages/public/register/Register'
 import Recovery from './pages/public/recovery/Recovery'
 import Activate from './pages/public/activate/Activate'
-import { Backdrop, CircularProgress, dividerClasses } from '@mui/material'
+import { Backdrop, CircularProgress } from '@mui/material'
 
 
 
@@ -48,7 +47,6 @@ const App = () => {
     const handleLoggedIn = async () => {
       if (token && !isLoggedIn) {
         const response = await authenticateUser(dispatch);
-        console.log(response);
         if (response){
           setIsLoggedIn(true);
         }
