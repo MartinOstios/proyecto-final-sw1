@@ -22,7 +22,7 @@ const Products = () => {
     name: '',
     description: '',
     category: '',
-    
+
   });
 
   // ---- INICIO MODALES
@@ -151,9 +151,15 @@ const Products = () => {
       <h1>Productos</h1>
       <Button variant='contained' color='primary' onClick={() => handleOpenCreate(true)} style={{ margin: "2px 2px 10px 2px" }}>Crear Producto</Button>
       <TableGenerica
-        columnasData={['_id', 'name', 'category', 'description',]}
-        columnasTabla={['ID', 'Nombre', 'Categoría' ,'Descripción' ]}
-        datos={data}
+        columns={
+          [
+            { field: '_id', headerName: 'ID', width: 100 },
+            { field: 'name', headerName: 'Nombre', width: 200 },
+            { field: 'description', headerName: 'Descripción', width: 200 },
+            { field: 'category', headerName: 'Categoría', width: 200, valueGetter: (params) => params.row.category.name }
+          ]
+        }
+        rows={data}
         handleOpenSearch={handleOpenSearch}
         handleOpenUpdate={handleOpenUpdate}
         handleDelete={handleDelete}
