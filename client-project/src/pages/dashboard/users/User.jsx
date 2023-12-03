@@ -35,6 +35,8 @@ const User = () => {
     role: '',
   });
 
+  const { role } = formInfo;
+
   // ---- PREVISUALIZACIÓN DE IMÁGENES
   const [imagen, setImagen] = useState(null);
 
@@ -77,6 +79,7 @@ const User = () => {
       reader.readAsDataURL(file);
     } else {
       setFormInfo((formInfo) => ({ ...formInfo, [event.target.name]: event.target.value }));
+      console.log(formInfo);
     }
   }
 
@@ -215,7 +218,7 @@ const User = () => {
                   label="Rol"
                   variant="outlined"
                   name="role"
-                  value={formInfo.role}
+                  value={role}
                   onChange={handleInputChange}
                 >
                   {roles.map((role) => (
@@ -263,7 +266,7 @@ const User = () => {
                   label="Rol"
                   variant="outlined"
                   name="role"
-                  value={selectedData?.role}
+                  value={role}
                   onChange={handleInputChange}
                 >
                   {roles.map((role) => (
