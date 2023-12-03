@@ -264,7 +264,7 @@ const LOGIN = async (req, res) => {
 		if (!user) throw new Error();
 		if(user.password === password){
 			const token = generateToken(user);
-			return res.status(200).json({access: token});
+			return res.status(200).json({access: token, user: user});
 		}
 		else throw new Error()
 
@@ -278,5 +278,14 @@ const LOGIN = async (req, res) => {
 	}
 }
 
+const GETME = async (req, res) => {
+    try {
+        const { _id } = req.user._doc;
+        const userFind = await User.findById(_id);
+        res.status(200).json(userFind);
+    } catch (err) {
+        res.status(400).json({ message: err.message });
+    }
+};
 
-export { CREATE, READ_ALL, READ_BY_MAIL, UPDATE, DELETE, LOGIN };
+export { CREATE, READ_ALL, READ_BY_MAIL, UPDATE, DELETE, LOGIN, GETME };

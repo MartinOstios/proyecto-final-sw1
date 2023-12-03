@@ -35,7 +35,7 @@ export class Users {
             method: "PATCH",
             body: data,
             headers: {
-                'Authorization': `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjY1NjhiZDhkYTdjOTgzODQ2MjE1ZDZiYiIsIm5hbWUiOiJNYXJ0aW4iLCJsYXN0bmFtZSI6Ik9zdGlvcyIsImVtYWlsIjoibWFydGluLm9zdGlvc2FAYXV0b25vbWEuZWR1LmNvIiwiYWRkcmVzcyI6bnVsbCwicm9sZSI6bnVsbCwiaWF0IjoxNzAxMzYzMDkyLCJleHAiOjE3MDE0NDk0OTJ9.x7ig1T-BbFHYTUIIznlu5FGuaI4MM2IxHdlGonyXl-Y`,
+                'Authorization': `Bearer ${this.getAccessToken()}`,
             }
         };
         try {
@@ -57,7 +57,7 @@ export class Users {
             method: "DELETE",
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjY1NjhiZDhkYTdjOTgzODQ2MjE1ZDZiYiIsIm5hbWUiOiJNYXJ0aW4iLCJsYXN0bmFtZSI6Ik9zdGlvcyIsImVtYWlsIjoibWFydGluLm9zdGlvc2FAYXV0b25vbWEuZWR1LmNvIiwiYWRkcmVzcyI6bnVsbCwicm9sZSI6bnVsbCwiaWF0IjoxNzAxMzYzMDkyLCJleHAiOjE3MDE0NDk0OTJ9.x7ig1T-BbFHYTUIIznlu5FGuaI4MM2IxHdlGonyXl-Y`,
+                'Authorization': `Bearer ${this.getAccessToken()}`,
             }
         };
         try {
