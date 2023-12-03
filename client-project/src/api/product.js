@@ -1,19 +1,20 @@
 import { ENV } from "../utils/constants";
 const { BASE_API, API_ROUTES } = ENV;
 
-export class Users {
+export class Product {
     // http://localhost:3100/api/v1
     baseApi = BASE_API;
-    userUrl = `${BASE_API}/${API_ROUTES.USERS}`
+    productUrl = `${BASE_API}/${API_ROUTES.SERVICES}`
 
-    // http://localhost:3100/api/v1/users/new
-    createUser = async (data) => {
-        const url = `${this.userUrl}/new`;
+    // http://localhost:3100/api/v1/services/new
+    createProduct = async (data) => {
+        const url = `${this.productUrl}/new`;
         const params = {
             method: "POST",
-            body: data,
+            body: JSON.stringify(data),
             headers: {
-                'Authorization': `Bearer ${this.getAccessToken()}`,
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjY1NjhiZGNhYTdjOTgzODQ2MjE1ZDZlNyIsIm5hbWUiOiJNYXJ0aW4iLCJsYXN0bmFtZSI6Ik9zdGlvcyIsImVtYWlsIjoibWFydGluLm9zdGlvc2FAYXV0b25vbWEuZWR1LmNvIiwiYWRkcmVzcyI6bnVsbCwicm9sZSI6bnVsbCwiaWF0IjoxNzAxNTU4NDYyLCJleHAiOjE3MDE2NDQ4NjJ9.OvMVPBhGga5xKoCwjy8vL8tQWvJt65TL9yO7YZLmt9M`,
             }
         };
         try {
@@ -28,14 +29,15 @@ export class Users {
         }
     }
 
-    // http://localhost:3100/api/v1/users/mail
-    updateUser = async (email, data) => {
-        const url = `${this.userUrl}/${email}`;
+    // http://localhost:3100/api/v1/services/id
+    updateProduct = async (id, data) => {
+        const url = `${this.productUrl}/${id}`;
         const params = {
             method: "PATCH",
-            body: data,
+            body: JSON.stringify(data),
             headers: {
-                'Authorization': `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjY1NjhiZDhkYTdjOTgzODQ2MjE1ZDZiYiIsIm5hbWUiOiJNYXJ0aW4iLCJsYXN0bmFtZSI6Ik9zdGlvcyIsImVtYWlsIjoibWFydGluLm9zdGlvc2FAYXV0b25vbWEuZWR1LmNvIiwiYWRkcmVzcyI6bnVsbCwicm9sZSI6bnVsbCwiaWF0IjoxNzAxMzYzMDkyLCJleHAiOjE3MDE0NDk0OTJ9.x7ig1T-BbFHYTUIIznlu5FGuaI4MM2IxHdlGonyXl-Y`,
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjY1NjhiZGNhYTdjOTgzODQ2MjE1ZDZlNyIsIm5hbWUiOiJNYXJ0aW4iLCJsYXN0bmFtZSI6Ik9zdGlvcyIsImVtYWlsIjoibWFydGluLm9zdGlvc2FAYXV0b25vbWEuZWR1LmNvIiwiYWRkcmVzcyI6bnVsbCwicm9sZSI6bnVsbCwiaWF0IjoxNzAxNTU4NDYyLCJleHAiOjE3MDE2NDQ4NjJ9.OvMVPBhGga5xKoCwjy8vL8tQWvJt65TL9yO7YZLmt9M`,
             }
         };
         try {
@@ -50,14 +52,14 @@ export class Users {
         }
     }
 
-    // http://localhost:3100/api/v1/users/mail
-    deleteUser = async (mail) => {
-        const url = `${this.userUrl}/${mail}`;
+    // http://localhost:3100/api/v1/services/id
+    deleteProduct = async (id) => {
+        const url = `${this.productUrl}/${id}`;
         const params = {
             method: "DELETE",
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjY1NjhiZDhkYTdjOTgzODQ2MjE1ZDZiYiIsIm5hbWUiOiJNYXJ0aW4iLCJsYXN0bmFtZSI6Ik9zdGlvcyIsImVtYWlsIjoibWFydGluLm9zdGlvc2FAYXV0b25vbWEuZWR1LmNvIiwiYWRkcmVzcyI6bnVsbCwicm9sZSI6bnVsbCwiaWF0IjoxNzAxMzYzMDkyLCJleHAiOjE3MDE0NDk0OTJ9.x7ig1T-BbFHYTUIIznlu5FGuaI4MM2IxHdlGonyXl-Y`,
+                'Authorization': `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjY1NjhiZGNhYTdjOTgzODQ2MjE1ZDZlNyIsIm5hbWUiOiJNYXJ0aW4iLCJsYXN0bmFtZSI6Ik9zdGlvcyIsImVtYWlsIjoibWFydGluLm9zdGlvc2FAYXV0b25vbWEuZWR1LmNvIiwiYWRkcmVzcyI6bnVsbCwicm9sZSI6bnVsbCwiaWF0IjoxNzAxNTU4NDYyLCJleHAiOjE3MDE2NDQ4NjJ9.OvMVPBhGga5xKoCwjy8vL8tQWvJt65TL9yO7YZLmt9M`,
             }
         };
         try {
@@ -72,9 +74,9 @@ export class Users {
         }
     }
 
-    // http://localhost:3100/api/v1/users
-    showUsers = async () => {
-        const url = `${this.userUrl}`;
+    // http://localhost:3100/api/v1/services
+    showProduct = async () => {
+        const url = `${this.productUrl}`;
         const params = {
             method: "GET",
             headers: {
