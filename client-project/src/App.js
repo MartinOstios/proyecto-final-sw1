@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { BrowserRouter, Navigate, Route, Routes} from 'react-router-dom'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import Dashboard from './pages/dashboard/Dashboard'
 import First from './pages/dashboard/first/First'
 import User from './pages/dashboard/users/User'
@@ -47,7 +47,7 @@ const App = () => {
     const handleLoggedIn = async () => {
       if (token && !isLoggedIn) {
         const response = await authenticateUser(dispatch);
-        if (response){
+        if (response) {
           setIsLoggedIn(true);
         }
       }
@@ -60,6 +60,7 @@ const App = () => {
     }
     handleLoggedIn();
   }, [dispatch, token, isLoggedIn, user]);
+  console.log(user?.role?.name);
 
   if (isLoading) {
     return (
@@ -98,15 +99,21 @@ const App = () => {
               <>
                 <Route path="/dashboard" element={<Dashboard />}>
                   <Route index element={<First />} />
-                  <Route path="/dashboard/users" element={<User />} />
-                  <Route path="/dashboard/categories" element={<Category />} />
-                  <Route path="/dashboard/products" element={<Product />} />
-                  <Route path="/dashboard/headquarters" element={<Headquarter />} />
-                  <Route path="/dashboard/clients" element={<Client />} />
-                  <Route path="/dashboard/roles" element={<Role />} />
-                  <Route path="/dashboard/reports" element={<Report />} />
-                  <Route path="/dashboard/profile" element={<Profile />} />
-                  <Route path="/dashboard/providers" element={<Provider />} />
+                  {user.role.name === 'Administrador' ?
+                    <>
+                      <Route path="/dashboard/users" element={<User />} />
+                      <Route path="/dashboard/categories" element={<Category />} />
+                      <Route path="/dashboard/products" element={<Product />} />
+                      <Route path="/dashboard/headquarters" element={<Headquarter />} />
+                      <Route path="/dashboard/clients" element={<Client />} />
+                      <Route path="/dashboard/roles" element={<Role />} />
+                      <Route path="/dashboard/reports" element={<Report />} />
+                      <Route path="/dashboard/profile" element={<Profile />} />
+                      <Route path="/dashboard/providers" element={<Provider />} />
+                    </>
+                    : <></>}
+
+
                 </Route>
               </>
             }

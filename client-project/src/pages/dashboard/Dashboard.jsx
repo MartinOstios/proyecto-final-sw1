@@ -43,7 +43,7 @@ const Dashboard = () => {
         >
           <Toolbar >
             <div style={{ width: '30%', marginTop: 10 }}>
-              <img src={authUser?.avatarClient} alt="" style={{ width: '50px', height: '50px', borderRadius: '50%'}} />
+              <img src={authUser?.avatarClient} alt="" style={{ width: '50px', height: '50px', borderRadius: '50%' }} />
             </div>
             <div style={{ marginLeft: 10, display: 'flex', flexDirection: 'column' }}>
               <p style={{ fontSize: 20, margin: 0 }}><b>{authUser?.name}</b></p>
@@ -52,79 +52,84 @@ const Dashboard = () => {
 
           </Toolbar>
           <Divider />
-          <List>
+          {authUser.role.name === 'Administrador' ?
+            <>
+              <List>
+                <ListItem key='Usuarios' disablePadding>
+                  <ListItemButton>
+                    <ListItemIcon>
+                      <PersonIcon />
+                    </ListItemIcon>
+                    <Link to={'/dashboard/users'} style={{ textDecoration: 'none', color: 'black' }}>Usuarios</Link>
+                  </ListItemButton>
+                </ListItem>
+                <ListItem key='Productos' disablePadding>
+                  <ListItemButton>
+                    <ListItemIcon>
+                      <ShoppingBagIcon />
+                    </ListItemIcon>
+                    <Link to={'/dashboard/products'} style={{ textDecoration: 'none', color: 'black' }}>Productos</Link>
+                  </ListItemButton>
+                </ListItem>
 
-            <ListItem key='Usuarios' disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  <PersonIcon />
-                </ListItemIcon>
-                <Link to={'/dashboard/users'} style={{ textDecoration: 'none', color: 'black' }}>Usuarios</Link>
-              </ListItemButton>
-            </ListItem>
-            <ListItem key='Productos' disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  <ShoppingBagIcon />
-                </ListItemIcon>
-                <Link to={'/dashboard/products'} style={{ textDecoration: 'none', color: 'black' }}>Productos</Link>
-              </ListItemButton>
-            </ListItem>
+                <ListItem key='Categorias' disablePadding>
+                  <ListItemButton>
+                    <ListItemIcon>
+                      <CategoryIcon />
+                    </ListItemIcon>
+                    <Link to={'/dashboard/categories'} style={{ textDecoration: 'none', color: 'black' }}>Categorías</Link>
+                  </ListItemButton>
+                </ListItem>
+                <ListItem key='Sedes' disablePadding>
+                  <ListItemButton>
+                    <ListItemIcon>
+                      <MapsHomeWorkIcon />
+                    </ListItemIcon>
+                    <Link to={'/dashboard/headquarters'} style={{ textDecoration: 'none', color: 'black' }}>Sedes</Link>
+                  </ListItemButton>
+                </ListItem>
+                <ListItem key='Clientes' disablePadding>
+                  <ListItemButton>
+                    <ListItemIcon>
+                      <PermContactCalendarIcon />
+                    </ListItemIcon>
+                    <Link to={'/dashboard/clients'} style={{ textDecoration: 'none', color: 'black' }}>Clientes</Link>
+                  </ListItemButton>
+                </ListItem>
+                <ListItem key='Proveedores' disablePadding>
+                  <ListItemButton>
+                    <ListItemIcon>
+                      <AirportShuttleIcon />
+                    </ListItemIcon>
+                    <Link to={'/dashboard/providers'} style={{ textDecoration: 'none', color: 'black' }}>Proveedores</Link>
+                  </ListItemButton>
+                </ListItem>
 
-            <ListItem key='Categorias' disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  <CategoryIcon />
-                </ListItemIcon>
-                <Link to={'/dashboard/categories'} style={{ textDecoration: 'none', color: 'black' }}>Categorías</Link>
-              </ListItemButton>
-            </ListItem>
-            <ListItem key='Sedes' disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  <MapsHomeWorkIcon />
-                </ListItemIcon>
-                <Link to={'/dashboard/headquarters'} style={{ textDecoration: 'none', color: 'black' }}>Sedes</Link>
-              </ListItemButton>
-            </ListItem>
-            <ListItem key='Clientes' disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  <PermContactCalendarIcon />
-                </ListItemIcon>
-                <Link to={'/dashboard/clients'} style={{ textDecoration: 'none', color: 'black' }}>Clientes</Link>
-              </ListItemButton>
-            </ListItem>
-            <ListItem key='Proveedores' disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  <AirportShuttleIcon />
-                </ListItemIcon>
-                <Link to={'/dashboard/providers'} style={{ textDecoration: 'none', color: 'black' }}>Proveedores</Link>
-              </ListItemButton>
-            </ListItem>
+              </List>
+              <Divider />
+              <List>
+                <ListItem key='Roles' disablePadding>
+                  <ListItemButton>
+                    <ListItemIcon>
+                      <AutoFixHighIcon />
+                    </ListItemIcon>
+                    <Link to={'/dashboard/roles'} style={{ textDecoration: 'none', color: 'black' }}>Roles</Link>
+                  </ListItemButton>
+                </ListItem>
 
-          </List>
-          <Divider />
-          <List>
-            <ListItem key='Roles' disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  <AutoFixHighIcon />
-                </ListItemIcon>
-                <Link to={'/dashboard/roles'} style={{ textDecoration: 'none', color: 'black' }}>Roles</Link>
-              </ListItemButton>
-            </ListItem>
-
-            <ListItem key='Reportes' disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  <ImportContactsIcon />
-                </ListItemIcon>
-                <Link to={'/dashboard/reports'} style={{ textDecoration: 'none', color: 'black' }}>Reportes</Link>
-              </ListItemButton>
-            </ListItem>
-          </List>
+                <ListItem key='Reportes' disablePadding>
+                  <ListItemButton>
+                    <ListItemIcon>
+                      <ImportContactsIcon />
+                    </ListItemIcon>
+                    <Link to={'/dashboard/reports'} style={{ textDecoration: 'none', color: 'black' }}>Reportes</Link>
+                  </ListItemButton>
+                </ListItem>
+              </List>
+            </>
+            :
+            <></>
+          }
         </Drawer>
         <Box
           component="main"
