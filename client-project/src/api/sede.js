@@ -14,7 +14,7 @@ export class Sede {
             body: JSON.stringify(data),
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjY1NmJmMmU2MDFlOTcyNjhlYWMyMDVjZCIsIm5hbWUiOiJhZG1pbiIsImxhc3RuYW1lIjoiYWRtaW4iLCJlbWFpbCI6ImFkbWluQGFkbWluLmNvbSIsImFkZHJlc3MiOm51bGwsInJvbGUiOiI2NTYyODUxN2FmYjMxNzQ3OGU2NTQ3MmYiLCJpYXQiOjE3MDE2MjE0ODcsImV4cCI6MTcwMTcwNzg4N30.46ZWFXS1jRDtJWyQuLaznGRQx6V9m2rNwQj6NAJMYZQ`,
+                'Authorization': `Bearer ${this.getAccessToken()}`,
             }
         };
         try {
@@ -37,7 +37,7 @@ export class Sede {
             body: JSON.stringify(data),
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjY1NmJmMmU2MDFlOTcyNjhlYWMyMDVjZCIsIm5hbWUiOiJhZG1pbiIsImxhc3RuYW1lIjoiYWRtaW4iLCJlbWFpbCI6ImFkbWluQGFkbWluLmNvbSIsImFkZHJlc3MiOm51bGwsInJvbGUiOiI2NTYyODUxN2FmYjMxNzQ3OGU2NTQ3MmYiLCJpYXQiOjE3MDE2MjE0ODcsImV4cCI6MTcwMTcwNzg4N30.46ZWFXS1jRDtJWyQuLaznGRQx6V9m2rNwQj6NAJMYZQ`,
+                'Authorization': `Bearer ${this.getAccessToken()}`,
             }
         };
         try {
@@ -59,7 +59,7 @@ export class Sede {
             method: "DELETE",
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjY1NmJmMmU2MDFlOTcyNjhlYWMyMDVjZCIsIm5hbWUiOiJhZG1pbiIsImxhc3RuYW1lIjoiYWRtaW4iLCJlbWFpbCI6ImFkbWluQGFkbWluLmNvbSIsImFkZHJlc3MiOm51bGwsInJvbGUiOiI2NTYyODUxN2FmYjMxNzQ3OGU2NTQ3MmYiLCJpYXQiOjE3MDE2MjE0ODcsImV4cCI6MTcwMTcwNzg4N30.46ZWFXS1jRDtJWyQuLaznGRQx6V9m2rNwQj6NAJMYZQ`,
+                'Authorization': `Bearer ${this.getAccessToken()}`,
             }
         };
         try {

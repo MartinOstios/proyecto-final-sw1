@@ -14,7 +14,7 @@ export class Product {
             body: JSON.stringify(data),
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjY1NjhiZGNhYTdjOTgzODQ2MjE1ZDZlNyIsIm5hbWUiOiJNYXJ0aW4iLCJsYXN0bmFtZSI6Ik9zdGlvcyIsImVtYWlsIjoibWFydGluLm9zdGlvc2FAYXV0b25vbWEuZWR1LmNvIiwiYWRkcmVzcyI6bnVsbCwicm9sZSI6bnVsbCwiaWF0IjoxNzAxNTU4NDYyLCJleHAiOjE3MDE2NDQ4NjJ9.OvMVPBhGga5xKoCwjy8vL8tQWvJt65TL9yO7YZLmt9M`,
+                'Authorization': `Bearer ${this.getAccessToken()}`,
             }
         };
         try {
@@ -37,7 +37,7 @@ export class Product {
             body: JSON.stringify(data),
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjY1NjhiZGNhYTdjOTgzODQ2MjE1ZDZlNyIsIm5hbWUiOiJNYXJ0aW4iLCJsYXN0bmFtZSI6Ik9zdGlvcyIsImVtYWlsIjoibWFydGluLm9zdGlvc2FAYXV0b25vbWEuZWR1LmNvIiwiYWRkcmVzcyI6bnVsbCwicm9sZSI6bnVsbCwiaWF0IjoxNzAxNTU4NDYyLCJleHAiOjE3MDE2NDQ4NjJ9.OvMVPBhGga5xKoCwjy8vL8tQWvJt65TL9yO7YZLmt9M`,
+                'Authorization': `Bearer ${this.getAccessToken()}`,
             }
         };
         try {
@@ -59,7 +59,7 @@ export class Product {
             method: "DELETE",
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjY1NjhiZGNhYTdjOTgzODQ2MjE1ZDZlNyIsIm5hbWUiOiJNYXJ0aW4iLCJsYXN0bmFtZSI6Ik9zdGlvcyIsImVtYWlsIjoibWFydGluLm9zdGlvc2FAYXV0b25vbWEuZWR1LmNvIiwiYWRkcmVzcyI6bnVsbCwicm9sZSI6bnVsbCwiaWF0IjoxNzAxNTU4NDYyLCJleHAiOjE3MDE2NDQ4NjJ9.OvMVPBhGga5xKoCwjy8vL8tQWvJt65TL9yO7YZLmt9M`,
+                'Authorization': `Bearer ${this.getAccessToken()}`,
             }
         };
         try {
