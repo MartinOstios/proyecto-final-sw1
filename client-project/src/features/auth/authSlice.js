@@ -11,7 +11,7 @@ const initialState = {
         avatar: null
     },
     access: null,
-    is_authenticated: null,
+    is_authenticated: false,
 };
 
 
@@ -30,7 +30,7 @@ export const authSlice = createSlice({
             state.user = action.payload;
         },  
         resetUser: (state, action) => {
-            state = initialState;
+            return initialState;
         }
     }
 });

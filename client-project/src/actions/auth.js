@@ -1,5 +1,5 @@
 import { Auth } from "../api/auth"
-import { setUser, authenticate } from '../features/auth/authSlice';
+import { setUser, authenticate, resetUser } from '../features/auth/authSlice';
 const authController = new Auth();
 
 
@@ -30,6 +30,7 @@ export const authenticateUser = async (dispatch) => {
     try {
         
         const result = await authController.authenticateUser();
+
         if (result) {
             dispatch(authenticate(result))
         } 
@@ -37,4 +38,9 @@ export const authenticateUser = async (dispatch) => {
     } catch(error) {
         return null
     }
+}
+
+export const logout = (dispatch) => {
+    authController.logout();
+    dispatch(resetUser());
 }
