@@ -5,8 +5,8 @@ const categoryController = new Category();
 export const createCategory = async (data, dispatch) => {
     try {
         const result = await categoryController.createCategory(data);
-        if (result && result.role) {
-            dispatch(addCategories(result.role));
+        if (result && result.category) {
+            dispatch(addCategories(result.category));
         }
         return result;
     } catch (error) {
