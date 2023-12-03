@@ -16,7 +16,7 @@ export const categorySlice = createSlice({
                 state.splice(state.indexOf(categoryFound), 1);
             }
         },
-        removeCategories: (state, action) => state.filter(role => role.id !== action.payload)
+        removeCategories: (state, action) => state.filter(category => category.id !== action.payload)
     }
 });
 

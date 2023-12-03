@@ -151,8 +151,8 @@ const Products = () => {
       <h1>Productos</h1>
       <Button variant='contained' color='primary' onClick={() => handleOpenCreate(true)} style={{ margin: "2px 2px 10px 2px" }}>Crear Producto</Button>
       <TableGenerica
-        columnasData={['_id', 'name', 'description', 'category']}
-        columnasTabla={['ID', 'Nombre', 'Descripción', 'Categoría']}
+        columnasData={['_id', 'name', 'category', 'description',]}
+        columnasTabla={['ID', 'Nombre', 'Categoría' ,'Descripción' ]}
         datos={data}
         handleOpenSearch={handleOpenSearch}
         handleOpenUpdate={handleOpenUpdate}
@@ -236,17 +236,17 @@ const Products = () => {
       <ModalGenerico open={openSearch} handleOpen={handleOpenSearch}>
         <h1 style={{ marginBottom: "20px" }}>Mostrar Producto</h1>
         <Grid item xs={7} md={7}>
-          <Typography id="rolName" variant="h6" component="h2">
+          <Typography id="productName" variant="h6" component="h2">
             <b>Nombre: </b>{selectedData?.name}
           </Typography>
-          <Typography id="userCategory" variant="h6" component="h2">
-            <b>Categoria: </b>{selectedData?.category ? selectedData.category : 'No definido'}
+          <Typography id="productCategory" variant="h6" component="h2">
+            <b>Categoria: </b>{selectedData?.category ? selectedData.category.name : 'No definido'}
           </Typography>
-          <Typography id="rolDescription" variant="h6" component="h2">
+          <Typography id="productDescription" variant="h6" component="h2">
             <b>Descripción: </b>{selectedData?.description}
           </Typography>
-          <Typography id="userActive" variant="h6" component="h2">
-            <b>Activo: </b>{selectedData?.active ? 'Sí' : 'No'}
+          <Typography id="productActive" variant="h6" component="h2">
+            <b>Activo: </b>{selectedData?.active? 'Sí' : 'No'}
           </Typography>
         </Grid>
       </ModalGenerico>
