@@ -6,6 +6,7 @@ import categoryReducer from '../features/slices/categorySlice';
 import productReducer from '../features/slices/productSlice';
 import sedeReducer from '../features/slices/sedeSlice';
 import clientReducer from '../features/slices/clientSlice';
+import providerReducer from '../features/slices/providerSlice';
 
 export const store = configureStore({
   reducer: {
@@ -16,6 +17,6 @@ export const store = configureStore({
     products: productReducer,
     sedes: sedeReducer,
     clients: clientReducer,
-
+    providers: providerReducer,
   }
 });

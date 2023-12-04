@@ -193,7 +193,7 @@ const Client = () => {
         <form>
           <Grid container spacing={2} display={'flex'}>
             <Grid item xs={12} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-              <img src={imagen ? imagen : selectedData?.avatar} alt="Previsualización" style={{ width: '100px', height: '100px', borderRadius: '50%', marginBottom: 20, borderStyle: 'solid' }} />
+              <img src={imagen ? imagen : selectedData?.avatarClient} alt="Previsualización" style={{ width: '100px', height: '100px', borderRadius: '50%', marginBottom: 20, borderStyle: 'solid' }} />
               <input type="file" style={{ display: 'none', marginTop: '10px' }} name='avatar' onChange={handleInputChange} id="fileInput" />
               <label htmlFor="fileInput">
                 <Button variant="contained" component="span">Avatar</Button>
@@ -217,10 +217,10 @@ const Client = () => {
           <img src={selectedData?.avatarClient} alt={selectedData?.name} style={{ maxWidth: "200px", borderRadius: "10px", margin: "0" }}></img>
         </Grid>
         <Grid item xs={7} md={7}>
-          <Typography id="userName" variant="h6" component="h2">
+          <Typography id="clientName" variant="h6" component="h2">
             <b>Nombre: </b>{selectedData?.name}
           </Typography>
-          <Typography id="userAddress" variant="h6" component="h2">
+          <Typography id="clientAddress" variant="h6" component="h2">
             <b>Dirección: </b>{selectedData?.address ? 'Dirección' : 'No definido'}
           </Typography>
         </Grid>
