@@ -27,12 +27,9 @@ export const setUser = async (dispatch) => {
     }
 }
 
-export const updateUser = async (email, data, dispatch) => {
+export const updateUser = async (email, data) => {
     try {
         const result = await userController.updateUser(email, data);
-        if (result) {
-            dispatch(editUsers(result.user));
-        }
         return result;
     }  catch (error) {
         return error;

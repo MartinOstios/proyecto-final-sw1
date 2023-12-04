@@ -16,7 +16,7 @@ export const productSlice = createSlice({
                 state.splice(state.indexOf(productFound), 1);
             }
         },
-        removeProducts: (state, action) => state.filter(product => product.id !== action.payload)
+        removeProducts: (state, action) => state.filter(product => product._id !== action.payload)
     }
 });
 

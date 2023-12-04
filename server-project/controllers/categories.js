@@ -1,4 +1,5 @@
 import Category from "../models/Category.js"
+import Service from '../models/Service.js'
 import validator from "validator"
 
 const validate = (params, action) => {
@@ -28,13 +29,6 @@ const validate = (params, action) => {
 
 const CREATE = async (req, res) => {
 	const params = req.body;
-	if (!validate(params, "POST")) {
-		return res.status(400).json({
-			status: 400,
-			type: "error",
-			message: "Missing or incorrect data",
-		});
-	}
 	const category = new Category(params);
 	try {
 		await category.save();
@@ -100,16 +94,15 @@ const UPDATE = async (req, res) => {
 			message: "ID not received",
 		});
 	}
-	if (!validate(updateParams, "PATCH")) {
-		return res.status(400).json({
-			status: 400,
-			type: "error",
-			message: "Missing or incorrect data",
-		});
-	}
 	try {
 		const updatedCategory = await Category.findByIdAndUpdate(id, {...updateParams});
-
+		if (updatedCategory.active){
+			const products = await Service.find({category: updatedCategory._id});
+			products.map((product) => {
+				product.active = false;
+				product.save();
+			});
+		}
 		return res.status(200).json({
 			status: 200,
 			type: "info",
@@ -128,6 +121,13 @@ const UPDATE = async (req, res) => {
 
 const DELETE = async (req, res) => {
 	const id = req.params.id;
+	if (id === '656df1c115cc52697e6b100f') {
+		return res.status(400).json({
+			status: 400,
+			type: "error",
+			message: "No se puede eliminar AllProducts"
+		});
+	}
 	try {
 		const category = await Category.findByIdAndDelete(id);
 		return res.status(200).json({

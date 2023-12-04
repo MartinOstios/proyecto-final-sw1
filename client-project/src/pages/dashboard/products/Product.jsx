@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { Button, InputLabel, Typography, Grid, TextField, Select, MenuItem, FormControl, Backdrop, CircularProgress } from '@mui/material'
+import { Button, InputLabel, Typography, Grid, TextField, Select, MenuItem, FormControl, Backdrop, CircularProgress, Chip } from '@mui/material'
 import TableGenerica from '../../../components/table/TableGenerico'
 import ModalGenerico from '../../../components/modal/ModalGenerico'
-import { Product } from '../../../api/product'
 import { Category } from '../../../api/category'
 import { createProduct, deleteProduct, setProduct, updateProduct } from '../../../actions/product'
 import { useDispatch, useSelector } from 'react-redux'
 import { useSnackbar } from 'notistack'
-
+import images from '../../../assets/images'
 const Products = () => {
   const { enqueueSnackbar } = useSnackbar();
   const data = useSelector((state) => state.products);
@@ -22,8 +21,18 @@ const Products = () => {
     name: '',
     description: '',
     category: '',
-
+    imagen1: '',
+    imagen2: '',
+    imagen3: '',
+    active: false,
+    status: false
   });
+
+  const { active, status } = formInfo;
+
+  const [imagenUno, setImagenUno] = useState(null);
+  const [imagenDos, setImagenDos] = useState(null);
+  const [imagenTres, setImagenTres] = useState(null);
 
   // ---- INICIO MODALES
 
@@ -53,7 +62,27 @@ const Products = () => {
 
   // ---------- INICIO HANDLE CHANGES
   const handleInputChange = (event) => {
-    setFormInfo((formInfo) => ({ ...formInfo, [event.target.name]: event.target.value }));
+    if (event.target.name === 'imagen1' || event.target.name === 'imagen2' || event.target.name === 'imagen3') {
+      const file = event.target.files ? event.target.files[0] : null;
+      setFormInfo((formInfo) => ({ ...formInfo, [event.target.name]: file }));
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        if (event.target.name === 'imagen1') {
+          setImagenUno(reader.result);
+        }
+        if (event.target.name === 'imagen2') {
+          setImagenDos(reader.result);
+        }
+        if (event.target.name === 'imagen3') {
+          setImagenTres(reader.result);
+        }
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setFormInfo((formInfo) => ({ ...formInfo, [event.target.name]: event.target.value }));
+      console.log(formInfo);
+    }
+
   }
   // ---------- FIN HANDLE CHANGES
 
@@ -62,20 +91,37 @@ const Products = () => {
   const handleSubmit = async (form) => {
     setOpenBackdrop(true);
 
-    const filterData = {};
-    for (const [key, value] of Object.entries(formInfo)) {
-      if (value !== "" && value) {
-        filterData[key] = value;
-      }
+    const formData = new FormData();
+    if (formInfo.imagen1 !== '') {
+      formData.append('images', formInfo.imagen1);
     }
 
-    console.log(filterData);
+    if (formInfo.imagen2 !== '') {
+      formData.append('images', formInfo.imagen2);
+    }
+
+    if (formInfo.imagen3 !== '') {
+      formData.append('images', formInfo.imagen3);
+    }
+
+    if (formInfo.name !== '') {
+      formData.append('name', formInfo.name);
+    }
+    if (formInfo.description !== '') {
+      formData.append('description', formInfo.description);
+    }
+    if (formInfo.category !== '') {
+      formData.append('category', formInfo.category);
+    }
+
+    formData.append('active', formInfo.active);
+    formData.append('status', formInfo.status);
     if (form === 'create') {
-      await handleCreate(filterData)
+      await handleCreate(formData)
     }
 
     if (form === 'edit') {
-      await handleEdit(filterData);
+      await handleEdit(formData);
     }
 
     setOpenBackdrop(false);
@@ -84,10 +130,11 @@ const Products = () => {
   const handleCreate = async (data) => {
     // Llamar API
     setOpenCreate(false);
-    const res = await createProduct(data, dispatch);
+    const res = await createProduct(data);
     // Llamar al Store
     if (res.status === 200) {
       enqueueSnackbar(res.message, { variant: 'success' });
+      await getData();
     } else {
       enqueueSnackbar(`Error: ${res.message}`, { variant: 'error' });
     }
@@ -96,10 +143,11 @@ const Products = () => {
   const handleEdit = async (data) => {
     // Llamar a la API
     setOpenUpdate(false);
-    const res = await updateProduct(selectedData._id, data, dispatch);
+    const res = await updateProduct(selectedData._id, data);
     // Llamar al Store
     if (res && res.status === 200) {
       enqueueSnackbar(res.message, { variant: 'success' });
+      await getData();
     } else {
       enqueueSnackbar(`Error: ${res.message}`, { variant: 'error' });
     }
@@ -108,9 +156,8 @@ const Products = () => {
   const handleDelete = async (dataId) => {
     setOpenBackdrop(true);
     const res = await deleteProduct(dataId, dispatch);
-    if (res.status === 200) {
+    if (res && res.status === 200) {
       enqueueSnackbar(res.message, { variant: 'success' });
-      getData();
     } else {
       enqueueSnackbar(`Error: ${res.message}`, { variant: 'error' });
     }
@@ -153,10 +200,18 @@ const Products = () => {
       <TableGenerica
         columns={
           [
-            { field: '_id', headerName: 'ID', width: 100 },
             { field: 'name', headerName: 'Nombre', width: 200 },
-            { field: 'description', headerName: 'Descripción', width: 200 },
-            { field: 'category', headerName: 'Categoría', width: 200, valueGetter: (params) => params.row.category.name }
+            { field: 'category', headerName: 'Categoría', width: 200, valueGetter: (params) => params.row.category[0] ? params.row.category[0].name : 'No definido' },
+            {
+              field: 'active', headerName: 'Activo', width: 150, renderCell: (params) => (
+                params.row.active ? <Chip label="Activo" color="primary" /> : <Chip label="Inactivo" color="error" />
+              )
+            },
+            {
+              field: 'status', headerName: 'Estado', width: 150, renderCell: (params) => (
+                params.row.status ? <Chip label="Disponible" color="primary" /> : <Chip label="Agotado" color="error" />
+              )
+            }
           ]
         }
         rows={data}
@@ -168,6 +223,29 @@ const Products = () => {
       <ModalGenerico open={openCreate} handleOpen={handleOpenCreate}>
         <h1 style={{ marginBottom: "15px" }}>Crear Producto </h1>
         <form>
+          <Grid item xs={12} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: 20, marginBottom: 10 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
+              <img src={imagenUno ? imagenUno : images.defaultImage} alt="Previsualización" style={{ width: '100px', height: '100px', borderRadius: '50%', borderStyle: 'solid' }} />
+              <input type="file" style={{ display: 'none', marginTop: '10px' }} name='imagen1' onChange={handleInputChange} id="fileInput1" />
+              <label htmlFor="fileInput1">
+                <Button variant="contained" component="span">Imagen 1</Button>
+              </label>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
+              <img src={imagenDos ? imagenDos : images.defaultImage} alt="Previsualización" style={{ width: '100px', height: '100px', borderRadius: '50%', borderStyle: 'solid' }} />
+              <input type="file" style={{ display: 'none', marginTop: '10px' }} name='imagen2' onChange={handleInputChange} id="fileInput2" />
+              <label htmlFor="fileInput2">
+                <Button variant="contained" component="span">Imagen 2</Button>
+              </label>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
+              <img src={imagenTres ? imagenTres : images.defaultImage} alt="Previsualización" style={{ width: '100px', height: '100px', borderRadius: '50%', borderStyle: 'solid' }} />
+              <input type="file" style={{ display: 'none', marginTop: '10px' }} name='imagen3' onChange={handleInputChange} id="fileInput3" />
+              <label htmlFor="fileInput3">
+                <Button variant="contained" component="span">Imagen 3</Button>
+              </label>
+            </div>
+          </Grid>
           <Grid container spacing={2} display={'flex'}>
             <Grid item xs={6} >
               <TextField type='text' label="Nombre" variant="outlined" name='name' onChange={handleInputChange} />
@@ -186,10 +264,50 @@ const Products = () => {
                   onChange={handleInputChange}
                 >
                   {categories.map((category) => (
+                    category.active && category._id !== '656df1c115cc52697e6b100f' ?
                     <MenuItem key={category._id} value={category._id}>
                       {category.name}
                     </MenuItem>
+                    : <></>
                   ))}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={6}>
+              <FormControl sx={{ width: '100%' }}>
+                <InputLabel id="demo-simple-select-label-2">Estado</InputLabel>
+                <Select
+                  label="Activo"
+                  variant="outlined"
+                  name="status"
+                  value={status}
+                  onChange={handleInputChange}
+                >
+                  <MenuItem key={true} value={true}>
+                    Disponible
+                  </MenuItem>
+                  <MenuItem key={false} value={false}>
+                    Agotado
+                  </MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={6}>
+              <FormControl sx={{ width: '100%' }}>
+                <InputLabel id="demo-simple-select-label-2">Activo</InputLabel>
+                <Select
+                  label="Activo"
+                  variant="outlined"
+                  name="active"
+                  value={active}
+                  onChange={handleInputChange}
+                >
+                  <MenuItem key={true} value={true}>
+                    Activo
+                  </MenuItem>
+                  <MenuItem key={false} value={false}>
+                    Inactivo
+                  </MenuItem>
                 </Select>
               </FormControl>
             </Grid>
@@ -205,6 +323,29 @@ const Products = () => {
       <ModalGenerico open={openUpdate} handleOpen={handleOpenUpdate}>
         <h1 style={{ marginBottom: "40px" }}>Actualizar Producto</h1>
         <form>
+          <Grid item xs={12} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: 20, marginBottom: 10 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
+              <img src={imagenUno ? imagenUno : selectedData?.imagesClient[0] ?? selectedData?.imagesClient[0]} alt="Previsualización" style={{ width: '100px', height: '100px', borderRadius: '50%', borderStyle: 'solid' }} />
+              <input type="file" style={{ display: 'none', marginTop: '10px' }} name='imagen1' onChange={handleInputChange} id="fileInput1" />
+              <label htmlFor="fileInput1">
+                <Button variant="contained" component="span">Imagen 1</Button>
+              </label>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
+              <img src={imagenDos ? imagenDos : selectedData?.imagesClient[1] ?? selectedData?.imagesClient[1]} alt="Previsualización" style={{ width: '100px', height: '100px', borderRadius: '50%', borderStyle: 'solid' }} />
+              <input type="file" style={{ display: 'none', marginTop: '10px' }} name='imagen2' onChange={handleInputChange} id="fileInput2" />
+              <label htmlFor="fileInput2">
+                <Button variant="contained" component="span">Imagen 2</Button>
+              </label>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
+              <img src={imagenTres ? imagenTres : selectedData?.imagesClient[2] ?? selectedData?.imagesClient[2]} alt="Previsualización" style={{ width: '100px', height: '100px', borderRadius: '50%', borderStyle: 'solid' }} />
+              <input type="file" style={{ display: 'none', marginTop: '10px' }} name='imagen3' onChange={handleInputChange} id="fileInput3" />
+              <label htmlFor="fileInput3">
+                <Button variant="contained" component="span">Imagen 3</Button>
+              </label>
+            </div>
+          </Grid>
           <Grid container spacing={2} display={'flex'}>
             <Grid item xs={6} >
               <TextField type='text' label="Nombre" variant="outlined" defaultValue={selectedData?.name} name='name' onChange={handleInputChange} />
@@ -219,14 +360,54 @@ const Products = () => {
                   label="Categoria"
                   variant="outlined"
                   name="category"
-                  value={selectedData?.category}
+                  value={formInfo.category}
                   onChange={handleInputChange}
                 >
                   {categories.map((category) => (
+                    category.active && category._id !== '656df1c115cc52697e6b100f' ?
                     <MenuItem key={category._id} value={category._id}>
                       {category.name}
                     </MenuItem>
+                    : <></>
                   ))}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={6}>
+              <FormControl sx={{ width: '100%' }}>
+                <InputLabel id="demo-simple-select-label-2">Estado</InputLabel>
+                <Select
+                  label="Estado"
+                  variant="outlined"
+                  name="status"
+                  value={status}
+                  onChange={handleInputChange}
+                >
+                  <MenuItem key={true} value={true}>
+                    Disponible
+                  </MenuItem>
+                  <MenuItem key={false} value={false}>
+                    Agotado
+                  </MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={6}>
+              <FormControl sx={{ width: '100%' }}>
+                <InputLabel id="demo-simple-select-label-2">Activo</InputLabel>
+                <Select
+                  label="Activo"
+                  variant="outlined"
+                  name="active"
+                  value={active}
+                  onChange={handleInputChange}
+                >
+                  <MenuItem key={true} value={true}>
+                    Activo
+                  </MenuItem>
+                  <MenuItem key={false} value={false}>
+                    Inactivo
+                  </MenuItem>
                 </Select>
               </FormControl>
             </Grid>
@@ -241,18 +422,24 @@ const Products = () => {
 
       <ModalGenerico open={openSearch} handleOpen={handleOpenSearch}>
         <h1 style={{ marginBottom: "20px" }}>Mostrar Producto</h1>
+        <Grid item xs={12} md={12}>
+          {selectedData?.imagesClient.map((image) =>
+            <img src={image} alt={selectedData?.name} style={{ maxWidth: "200px", borderRadius: "10px", margin: "0" }}></img>
+          )}
+
+        </Grid>
         <Grid item xs={7} md={7}>
           <Typography id="productName" variant="h6" component="h2">
             <b>Nombre: </b>{selectedData?.name}
           </Typography>
           <Typography id="productCategory" variant="h6" component="h2">
-            <b>Categoria: </b>{selectedData?.category ? selectedData.category.name : 'No definido'}
+            <b>Categoria: </b>{selectedData?.category[0] ? selectedData.category[0].name : 'No definido'}
           </Typography>
           <Typography id="productDescription" variant="h6" component="h2">
             <b>Descripción: </b>{selectedData?.description}
           </Typography>
           <Typography id="productActive" variant="h6" component="h2">
-            <b>Activo: </b>{selectedData?.active? 'Sí' : 'No'}
+            <b>Activo: </b>{selectedData?.active ? 'Sí' : 'No'}
           </Typography>
         </Grid>
       </ModalGenerico>

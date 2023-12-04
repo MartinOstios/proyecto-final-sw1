@@ -11,9 +11,8 @@ export class Product {
         const url = `${this.productUrl}/new`;
         const params = {
             method: "POST",
-            body: JSON.stringify(data),
+            body: data,
             headers: {
-                'Content-Type': 'application/json',
                 'Authorization': `Bearer ${this.getAccessToken()}`,
             }
         };
@@ -34,9 +33,8 @@ export class Product {
         const url = `${this.productUrl}/${id}`;
         const params = {
             method: "PATCH",
-            body: JSON.stringify(data),
+            body: data,
             headers: {
-                'Content-Type': 'application/json',
                 'Authorization': `Bearer ${this.getAccessToken()}`,
             }
         };
