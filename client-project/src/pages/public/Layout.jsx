@@ -7,7 +7,7 @@ const Layout = () => {
   return (
     <>
       <Navbar/>
-      <div style={{height: '100vh', backgroundColor: '#FBF6EA'}}>
+      <div style={{minHeight: '100vh', backgroundColor: '#FBF6EA'}}>
         <Outlet/>
       </div>
       
