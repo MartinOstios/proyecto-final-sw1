@@ -7,6 +7,7 @@ import { Button, InputLabel, Typography, Grid, TextField, Select, MenuItem, Form
 import { Role } from '../../../api/role'
 import ModalGenerico from '../../../components/modal/ModalGenerico'
 import { deleteUser, setUser, updateUser } from '../../../actions/users'
+import { logout } from '../../../actions/auth';
 
 import { useSnackbar } from 'notistack'
 
@@ -85,6 +86,7 @@ const Profile = () => {
     const res = await deleteUser(data.email, dispatch);
     if (res.status === 200) {
       enqueueSnackbar(res.message, { variant: 'success' });
+      logout(dispatch);
       navigate("/");
     } else {
       enqueueSnackbar(`Error: ${res.message}`, { variant: 'error' });
