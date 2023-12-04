@@ -24,9 +24,10 @@ const CREATE = async (req, res) => {
 	const params = req.body;
 	if (req.file) {
 		const file = req.file;
-		params.avatar = file.path;
+		params.avatarClient = `http://localhost:3100/public/clients/${file.filename}`;
+		params.avatarServer = file.path;
 	}
-	if (!req.file && updateParams.avatar !== undefined && updateParams.avatar === ""){
+	if (!req.file && params.avatarServer !== undefined && params.avatarServer === ""){
 		return res.status(400).json({
 			status: 400,
 			type: "error",
@@ -35,10 +36,10 @@ const CREATE = async (req, res) => {
 	}
 	if (!validate(params, "POST")) {
 		if (
-			params.avatar &&
-			params.avatar != "uploads/avatar/default.png"
+			params.avatarServer &&
+			params.avatarServer != "uploads/avatar/default.png"
 		)
-			await fs.unlink(params.avatar);
+			await fs.unlink(params.avatarServer);
 		return res.status(400).json({
 			status: 400,
 			type: "error",
@@ -59,10 +60,10 @@ const CREATE = async (req, res) => {
 		});
 	} catch (e) {
 		if (
-			params.avatar &&
-			params.avatar != "uploads/avatar/default.png"
+			params.avatarServer &&
+			params.avatarServer != "uploads/avatar/default.png"
 		)
-			await fs.unlink(params.avatar);
+			await fs.unlink(params.avatarServer);
 		return res.status(400).json({
 			status: 400,
 			type: "error",
@@ -97,7 +98,7 @@ const READ_BY_ID = async (req, res) => {
 				message: "Client not found"
 			});
 		}
-		return res.status(200).send(client);
+		return res.status(200).send(client[0]);
 	} catch (e) {
 		return res.status(400).json({
 			status: 400,
@@ -113,9 +114,10 @@ const UPDATE = async (req, res) => {
 	const updateParams = req.body;
 	if (req.file) {
 		const file = req.file;
-		updateParams.avatar = file.path;
+		updateParams.avatarClient = `http://localhost:3100/public/clients/${file.filename}`;
+		updateParams.avatarServer = file.path;
 	}
-	if (!req.file && updateParams.avatar !== undefined && updateParams.avatar === ""){
+	if (!req.file && updateParams.avatarServer !== undefined && updateParams.avatarServer === ""){
 		return res.status(400).json({
 			status: 400,
 			type: "error",
@@ -136,8 +138,8 @@ const UPDATE = async (req, res) => {
 		}
 
 		const updatedClient = await Client.findByIdAndUpdate(id, {...updateParams});
-		if (updateParams.avatar && updatedClient.avatar != "uploads/avatar/default.png")
-			await fs.unlink(updatedClient.avatar);
+		if (updateParams.avatarServer && updatedClient.avatarServer != "uploads/avatar/default.png")
+			await fs.unlink(updatedClient.avatarServer);
 		return res.status(200).json({
 			status: 200,
 			type: "info",
@@ -158,7 +160,7 @@ const DELETE = async (req, res) => {
 	const id = req.params.id;
 	try {
 		const client = await Client.findByIdAndDelete(id);
-		if (client.avatar && client.avatar != "uploads/avatar/default.png")
+		if (client.avatarServer && client.avatarServer != "uploads/avatar/default.png")
 			await fs.unlink(client.avatar);
 		return res.status(200).json({
 			status: 200,
