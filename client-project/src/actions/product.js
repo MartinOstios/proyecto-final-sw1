@@ -2,12 +2,9 @@ import { Product } from '../api/product';
 import { setProducts, addProducts, editProducts, removeProducts } from '../features/slices/productSlice';
 const productController = new Product();
 
-export const createProduct = async (data, dispatch) => {
+export const createProduct = async (data) => {
     try {
         const result = await productController.createProduct(data);
-        if (result && result.product) {
-            dispatch(addProducts(result.product));
-        }
         return result;
     } catch (error) {
         return null;
@@ -26,12 +23,9 @@ export const setProduct = async (dispatch) => {
     }
 }
 
-export const updateProduct = async (id, data, dispatch) => {
+export const updateProduct = async (id, data) => {
     try {
         const result = await productController.updateProduct(id, data);
-        if (result) {
-            dispatch(editProducts(result.product));
-        }
         return result;
     }  catch (error) {
         return error;

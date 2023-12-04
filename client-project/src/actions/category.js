@@ -26,12 +26,9 @@ export const setCategory = async (dispatch) => {
     }
 }
 
-export const updateCategory = async (id, data, dispatch) => {
+export const updateCategory = async (id, data) => {
     try {
         const result = await categoryController.updateCategory(id, data);
-        if (result) {
-            dispatch(editCategories(result.category));
-        }
         return result;
     }  catch (error) {
         return error;

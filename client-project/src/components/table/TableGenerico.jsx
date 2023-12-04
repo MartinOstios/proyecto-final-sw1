@@ -107,7 +107,7 @@ export default function TableGenerica({ handleOpenUpdate, handleOpenSearch, hand
                         </g>
                     </g>
                 </svg>
-                <Box sx={{ mt: 1 }}>No Rows</Box>
+                <Box sx={{ mt: 1 }}>No hay datos</Box>
             </StyledGridOverlay>
         );
     }

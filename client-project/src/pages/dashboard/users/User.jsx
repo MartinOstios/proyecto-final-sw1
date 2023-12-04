@@ -122,9 +122,10 @@ const User = () => {
 
   const handleEdit = async (formData) => {
     setOpenUpdate(false);
-    const res = await updateUser(selectedData.email, formData, dispatch);
+    const res = await updateUser(selectedData.email, formData);
     if (res && res.status === 200) {
       enqueueSnackbar(res.message, { variant: 'success' });
+      await getData();
     } else {
       enqueueSnackbar(`Error: ${res.message}`, { variant: 'error' });
     }
