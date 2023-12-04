@@ -61,12 +61,14 @@ const Activate = () => {
           Whatsapp
         </Button>
       </div>
+      {activateBool ?
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 15, marginTop: 20 }}>
+          <h2 style={{ margin: 0 }}>Ingresa el código</h2>
+          <TextField id="outlined-basic" label="Código" variant="outlined" onChange={handleChange} />
+          <Button variant='outlined' onClick={handleSubmit}>Aceptar</Button>
+        </div>
+      : <></>}
 
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 15, marginTop: 20 }}>
-        <h2 style={{ margin: 0 }}>Ingresa el código</h2>
-        <TextField id="outlined-basic" label="Código" variant="outlined" onChange={handleChange} />
-        <Button variant='outlined' onClick={handleSubmit}>Aceptar</Button>
-      </div>
     </div>
   )
 }
