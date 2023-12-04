@@ -24,10 +24,10 @@ const CREATE = async (req, res) => {
 	const params = req.body;
 	if (req.file) {
 		const file = req.file;
-		console.log(file);
-		params.avatar = file.path;
+		params.avatarClient = `http://localhost:3100/public/providers/${file.filename}`;
+		params.avatarServer = file.path;
 	}
-	if (!req.file && params.avatar !== undefined && params.avatar === ""){
+	if (!req.file && params.avatarServer !== undefined && params.avatarServer === ""){
 		return res.status(400).json({
 			status: 400,
 			type: "error",
@@ -36,10 +36,10 @@ const CREATE = async (req, res) => {
 	}
 	if (!validate(params, "POST")) {
 		if (
-			params.avatar &&
-			params.avatar != "uploads/avatar/default.png"
+			params.avatarServer &&
+			params.avatarServer != "uploads/avatar/default.png"
 		)
-			await fs.unlink(params.avatar);
+			await fs.unlink(params.avatarServer);
 		return res.status(400).json({
 			status: 400,
 			type: "error",
@@ -60,8 +60,8 @@ const CREATE = async (req, res) => {
 		});
 	} catch (e) {
 		if (
-			params.avatar &&
-			params.avatar != "uploads/avatar/default.png"
+			params.avatarServer &&
+			params.avatarServer != "uploads/avatar/default.png"
 		)
 			await fs.unlink(params.avatar);
 		return res.status(400).json({
@@ -114,10 +114,10 @@ const UPDATE = async (req, res) => {
 	const updateParams = req.body;
 	if (req.file) {
 		const file = req.file;
-		console.log(file);
-		updateParams.avatar = file.path;
+		params.avatarClient = `http://localhost:3100/public/providers/${file.filename}`;
+		params.avatarServer = file.path;
 	}
-	if (!req.file && updateParams.avatar !== undefined && updateParams.avatar === ""){
+	if (!req.file && updateParams.avatarServer !== undefined && updateParams.avatarServer === ""){
 		return res.status(400).json({
 			status: 400,
 			type: "error",
@@ -138,8 +138,8 @@ const UPDATE = async (req, res) => {
 		}
 
 		const updatedProvider = await Provider.findByIdAndUpdate(id, {...updateParams});
-		if (updateParams.avatar && updatedProvider.avatar != "uploads/avatar/default.png")
-			await fs.unlink(updatedProvider.avatar);
+		if (updateParams.avatarServer && updatedProvider.avatarServer != "uploads/avatar/default.png")
+			await fs.unlink(updatedProvider.avatarServer);
 		return res.status(200).json({
 			status: 200,
 			type: "info",
@@ -160,8 +160,8 @@ const DELETE = async (req, res) => {
 	const id = req.params.id;
 	try {
 		const provider = await Provider.findByIdAndDelete(id);
-		if (provider.avatar && provider.avatar != "uploads/avatar/default.png")
-			await fs.unlink(provider.avatar);
+		if (provider.avatarServer && provider.avatarServer != "uploads/avatar/default.png")
+			await fs.unlink(provider.avatarServer);
 		return res.status(200).json({
 			status: 200,
 			type: "info",
