@@ -309,7 +309,7 @@ const GENERATECODE = async (req, res) => {
 		if (user) {
 			// Llamar a la función encargada (teléfono o correo)
 			if (method === 'email') {
-				await sendEmail(email, numeroRandom);
+				await sendEmailActivate(email, numeroRandom);
 				user.tempCode = numeroRandom;
 				await user.save();
 				return res.status(200).json({
@@ -360,7 +360,7 @@ const ACTIVATE = async (req, res) => {
 					message: "Cuenta activada",
 					user: user
 				});
-			}else{
+			} else {
 				return res.status(400).json({ message: 'El código no es válido' });
 			}
 		} else {
@@ -371,8 +371,27 @@ const ACTIVATE = async (req, res) => {
 	}
 }
 
+const SENDRECOVERY = async (req, res) => {
+	try {
+		const { email } = req.body;
+		const user = await User.findOne({ email: email }).exec();
+		if (user) {
+			await sendEmailRecovery(user);
+			return res.status(200).json({
+				status: 200,
+				type: "info",
+				message: "Se envió el correo correctamente"
+			});
+		}  else {
+			return res.status(400).json({ message: 'El correo ingresado no es válido' });
+		}
+	} catch (err) {
+		res.status(400).json({ message: err.message })
+	}
+}
 
-const sendEmail = async (email, code) => {
+
+const sendEmailActivate = async (email, code) => {
 	const msg = {
 		to: `${email}`,
 		from: 'martin.ostiosa@autonoma.edu.co',
@@ -382,6 +401,31 @@ const sendEmail = async (email, code) => {
 			<h3>Este es tu código de autenticación</h3>
 			<h1>${code}</h1>
 			<p>Recuerda no compartirlo con nadie</p>
+		`,
+	}
+	sgMail
+		.send(msg)
+		.then(() => {
+			console.log('Email sent to: ' + email);
+			return true;
+		})
+		.catch((error) => {
+			console.error(error)
+			return false;
+		});
+}
+
+const sendEmailRecovery = async (user) => {
+	const msg = {
+		to: `${user.email}`,
+		from: 'martin.ostiosa@autonoma.edu.co',
+		subject: `Recuperar contraseña`,
+		text: 'Recuperar contraseña',
+		html: `
+			<h1>Recuperar contraseña</h1>
+			<p>¡Hola ${user.name}! Para recuperar la contraseña entra al siguiente link: </p>
+			<br>
+			<a href="http://localhost:3100/api/v1/auth/recovery/${user._id}">Recuperar contraseña</a>
 		`,
 	}
 	sgMail
@@ -414,4 +458,4 @@ const sendWhatsapp = async (phone_number, code) => {
 	});
 }
 
-export { CREATE, READ_ALL, READ_BY_MAIL, UPDATE, DELETE, LOGIN, GETME, GENERATECODE, ACTIVATE };
+export { CREATE, READ_ALL, READ_BY_MAIL, UPDATE, DELETE, LOGIN, GETME, GENERATECODE, ACTIVATE, SENDRECOVERY };
