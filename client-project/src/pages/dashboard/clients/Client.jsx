@@ -11,7 +11,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { createClient, deleteClient, setClient, updateClient } from '../../../actions/client'
 
 import { useSnackbar } from 'notistack'
-import { create } from '@mui/material/styles/createTransitions'
 
 const Client = () => {
   const { enqueueSnackbar } = useSnackbar();
@@ -70,7 +69,6 @@ const Client = () => {
       reader.readAsDataURL(file);
     } else {
       setFormInfo((formInfo) => ({ ...formInfo, [event.target.name]: event.target.value }));
-      console.log(formInfo);
     }
   }
 
@@ -216,7 +214,7 @@ const Client = () => {
       <ModalGenerico open={openSearch} handleOpen={handleOpenSearch}>
         <h1 style={{ marginBottom: "20px" }}>Mostrar Cliente </h1>
         <Grid item xs={12} md={12}>
-          <img src={selectedData?.avatar} alt={selectedData?.name} style={{ maxWidth: "200px", borderRadius: "10px", margin: "0" }}></img>
+          <img src={selectedData?.avatarClient} alt={selectedData?.name} style={{ maxWidth: "200px", borderRadius: "10px", margin: "0" }}></img>
         </Grid>
         <Grid item xs={7} md={7}>
           <Typography id="userName" variant="h6" component="h2">

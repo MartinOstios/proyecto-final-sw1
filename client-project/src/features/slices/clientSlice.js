@@ -16,7 +16,7 @@ export const clientSlice = createSlice({
                 state.splice(state.indexOf(clientFound), 1);
             }
         },
-        removeClients: (state, action) => state.filter(client => client.id !== action.payload)
+        removeClients: (state, action) => state.filter(client => client._id !== action.payload)
     }
 });
 
