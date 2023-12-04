@@ -25,6 +25,7 @@ import Register from './pages/public/register/Register'
 import Recovery from './pages/public/recovery/Recovery'
 import Activate from './pages/public/activate/Activate'
 import { Backdrop, CircularProgress } from '@mui/material'
+import ResetPassword from './pages/public/recovery/ResetPassword'
 
 
 
@@ -90,6 +91,7 @@ const App = () => {
                   <Route path="/register" element={<Register />} />
                   <Route path="/recovery" element={<Recovery />} />
                   <Route path="/activate" element={<Activate />} />
+                  <Route path="/reset/:id" element={<ResetPassword/>} />
                 </>
               }
 

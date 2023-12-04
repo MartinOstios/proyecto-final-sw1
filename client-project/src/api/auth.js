@@ -126,6 +126,52 @@ export class Auth {
         }
     }
 
+    sendRecovery = async (data) => {
+        const url = `${this.authUrl}/send`;
+        const params = {
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        };
+        try {
+            const response = await fetch(url, params);
+            if (!response.ok) {
+                throw new Error(response.statusText);
+            };
+
+            const result = await response.json();
+
+            return result;
+        } catch (error) {
+            return null;
+        }
+    }
+
+    resetPassword = async (data) => {
+        const url = `${this.authUrl}/recovery`;
+        const params = {
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        };
+        try {
+            const response = await fetch(url, params);
+            if (!response.ok) {
+                throw new Error(response.statusText);
+            };
+
+            const result = await response.json();
+
+            return result;
+        } catch (error) {
+            return null;
+        }
+    }
+
     logout = () => {
         localStorage.removeItem("access");
     }
