@@ -65,3 +65,14 @@ export const activate = async (data) => {
     const result = await authController.activate(data);
     return result;
 }
+
+
+export const sendRecovery = async (data) => {
+    const result = await authController.sendRecovery(data);
+    return result
+} 
+
+export const resetPassword = async (data) => {
+    const result = await authController.resetPassword(data);
+    return result
+}

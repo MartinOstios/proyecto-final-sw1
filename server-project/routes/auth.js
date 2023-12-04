@@ -8,7 +8,8 @@ import {
 	LOGIN,
 	GENERATECODE,
 	ACTIVATE,
-	SENDRECOVERY
+	SENDRECOVERY,
+	RESETPASSWORD
 } from "../controllers/users.js"
 
 import { CREATE } from "../controllers/users.js";
@@ -20,6 +21,7 @@ router.get("/me", [auth], GETME);
 router.post("/generate", GENERATECODE);
 router.post("/activate", ACTIVATE);
 router.post("/send", SENDRECOVERY);
+router.post("/recovery", RESETPASSWORD);
 
 
 export default router;

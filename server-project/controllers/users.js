@@ -376,16 +376,39 @@ const SENDRECOVERY = async (req, res) => {
 		const { email } = req.body;
 		const user = await User.findOne({ email: email }).exec();
 		if (user) {
+			console.log(user.email);
 			await sendEmailRecovery(user);
 			return res.status(200).json({
 				status: 200,
 				type: "info",
 				message: "Se envió el correo correctamente"
 			});
-		}  else {
+		} else {
 			return res.status(400).json({ message: 'El correo ingresado no es válido' });
 		}
 	} catch (err) {
+		res.status(400).json({ message: err.message })
+	}
+}
+
+
+const RESETPASSWORD = async (req, res) => {
+	try {
+		const { id, password } = req.body;
+		const user = await User.findById({ _id: id }).exec()
+
+		user.password = password;
+
+		await user.save();
+
+		return res.status(200).json({
+			status: 200,
+			type: "info",
+			message: "Se actualizó la contraseña"
+		});
+
+	}
+	catch (err) {
 		res.status(400).json({ message: err.message })
 	}
 }
@@ -425,13 +448,13 @@ const sendEmailRecovery = async (user) => {
 			<h1>Recuperar contraseña</h1>
 			<p>¡Hola ${user.name}! Para recuperar la contraseña entra al siguiente link: </p>
 			<br>
-			<a href="http://localhost:3100/api/v1/auth/recovery/${user._id}">Recuperar contraseña</a>
+			<a href="http://localhost:3000/reset/${user._id}">Recuperar contraseña</a>
 		`,
 	}
 	sgMail
 		.send(msg)
 		.then(() => {
-			console.log('Email sent to: ' + email);
+			console.log('Email sent to: ' + user.email);
 			return true;
 		})
 		.catch((error) => {
@@ -458,4 +481,4 @@ const sendWhatsapp = async (phone_number, code) => {
 	});
 }
 
-export { CREATE, READ_ALL, READ_BY_MAIL, UPDATE, DELETE, LOGIN, GETME, GENERATECODE, ACTIVATE, SENDRECOVERY };
+export { CREATE, READ_ALL, READ_BY_MAIL, UPDATE, DELETE, LOGIN, GETME, GENERATECODE, ACTIVATE, SENDRECOVERY, RESETPASSWORD };
