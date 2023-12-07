@@ -20,7 +20,12 @@ const Headquarter = () => {
   const [selectedData, setSelectedData] = useState(null);
   const [formInfo, setFormInfo] = useState({
     name: '',
-    /* address: '', */
+    address: {
+      country: '',
+      department: '',
+      municipality: '',
+      nomenclature: ''
+    },
     contact : '',
     active: false
   });
@@ -62,11 +67,19 @@ const Headquarter = () => {
   const handleSubmit = async (form) => {
     setOpenBackdrop(true);
 
+    const formData = new FormData();
     const filterData = {};
     for (const [key, value] of Object.entries(formInfo)) {
+      if (key === 'address') {
+        // Si es la propiedad 'address', agregar cada campo individualmente
+        for (const [addressKey, addressValue] of Object.entries(value)) {
+          formData.append(addressKey, addressValue);
+        }
+      } else {
       if (value !== "") {
         filterData[key] = value;
       }
+    }
     }
 
     console.log(filterData);
@@ -179,24 +192,18 @@ const Headquarter = () => {
             <Grid item xs={6}>
               <TextField type='text' label="Contacto" variant="outlined" name='contact' onChange={handleInputChange} />
             </Grid>
-            {/* <Grid item xs={6}>
-              <FormControl sx={{ width: '100%' }}>
-                <InputLabel id="demo-simple-select-label-2">Direccion</InputLabel>
-                <Select
-                  label="Direccion"
-                  variant="outlined"
-                  name="address"
-                  value={formInfo.address}
-                  onChange={handleInputChange}
-                >
-                  {addresses.map((address) => (
-                    <MenuItem key={address._id} value={address._id}>
-                      {address.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid> */}
+            <Grid item xs={6}>
+              <TextField type='text' label="Pais" variant="outlined" name='address.country' onChange={handleInputChange} />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField type='text' label="Departamento" variant="outlined" name='address.department' onChange={handleInputChange} />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField type='text' label="Municipio" variant="outlined" name='address.municipality' onChange={handleInputChange} />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField type='text' label="Nomenclatura" variant="outlined" name='address.nomenclature' onChange={handleInputChange} />
+            </Grid>
             <Grid item xs={6}>
               <FormControl sx={{ width: '100%' }}>
                 <InputLabel id="demo-simple-select-label-2">Activo</InputLabel>
@@ -235,24 +242,6 @@ const Headquarter = () => {
             <Grid item xs={6}>
               <TextField type='text' label="Contacto" variant="outlined" defaultValue={selectedData?.contact} name='contact' onChange={handleInputChange} />
             </Grid>
-            {/* <Grid item xs={6}>
-              <FormControl sx={{ width: '100%' }}>
-                <InputLabel id="demo-simple-select-label-2">Direccion</InputLabel>
-                <Select
-                  label="Direccion"
-                  variant="outlined"
-                  name="address"
-                  value={selectedData?.address}
-                  onChange={handleInputChange}
-                >
-                  {addresses.map((address) => (
-                    <MenuItem key={address._id} value={address._id}>
-                      {address.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid> */}
             <Grid item xs={6}>
               <FormControl sx={{ width: '100%' }}>
                 <InputLabel id="demo-simple-select-label-2">Activo</InputLabel>
@@ -287,13 +276,22 @@ const Headquarter = () => {
           <Typography id="sedeName" variant="h6" component="h2">
             <b>Nombre: </b>{selectedData?.name}
           </Typography>
-          {/* <Typography id="userCategory" variant="h6" component="h2">
-            <b>Direccion: </b>{selectedData ?.address ? selectedData.address : 'No definido'}
-          </Typography> */}
+          <Typography id="sedeAddress" variant="h6" component="h2">
+            <b>Pais: </b>{selectedData?.address ? selectedData.address.country : 'No definido'}
+          </Typography>
+          <Typography id="sedeAddress" variant="h6" component="h2">
+            <b>Departamento: </b>{selectedData?.address ? selectedData.address.department : 'No definido'}
+          </Typography>
+          <Typography id="sedeAddress" variant="h6" component="h2">
+            <b>Municipio: </b>{selectedData?.address ? selectedData.address.municipality : 'No definido'}
+          </Typography>
+          <Typography id="sedeAddress" variant="h6" component="h2">
+            <b>Nomenclatura: </b>{selectedData?.address ? selectedData.address.nomenclature : 'No definido'}
+          </Typography>
           <Typography id="sedeContact" variant="h6" component="h2">
             <b>Contacto: </b>{selectedData?.contact}
           </Typography>
-          <Typography id="userActive" variant="h6" component="h2">
+          <Typography id="sedeActive" variant="h6" component="h2">
             <b>Activo: </b>{selectedData?.active ? 'Sí' : 'No'}
           </Typography>
         </Grid>
