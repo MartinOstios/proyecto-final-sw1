@@ -27,7 +27,10 @@ const Provider = () => {
     name: '',
     avatar: null,
     address: '',
+    active: false
   });
+
+  const { active } = formInfo
 
   // ---- PREVISUALIZACIÓN DE IMÁGENES
   const [imagen, setImagen] = useState(null);
@@ -109,9 +112,10 @@ const Provider = () => {
 
   const handleEdit = async (formData) => {
     setOpenUpdate(false);
-    const res = await updateProvider(selectedData._id, formData, dispatch);
+    const res = await updateProvider(selectedData._id, formData);
     if (res && res.status === 200) {
       enqueueSnackbar(res.message, { variant: 'success' });
+      getData();
     } else {
       enqueueSnackbar(`Error: ${res.message}`, { variant: 'error' });
     }
@@ -153,6 +157,11 @@ const Provider = () => {
           [
             { field: 'name', headerName: 'Nombre', width: 200 },
             { field: 'address', headerName: 'Direccion', width: 200 },
+            {
+              field: 'active', headerName: 'Activo', width: 150, renderCell: (params) => (
+                params.row.active ? <Chip label="Activo" color="primary" /> : <Chip label="Inactivo" color="error" />
+              )
+            }
           ]
         }
         rows={data}
@@ -178,6 +187,26 @@ const Provider = () => {
             {/*  <Grid item xs={6}>
               <TextField type='text' label="Dirección" variant="outlined" name='address' onChange={handleInputChange} />
             </Grid> */}
+            <Grid item xs={6}>
+              <FormControl sx={{ width: '100%' }}>
+                <InputLabel id="demo-simple-select-label-2">Activo</InputLabel>
+                <Select
+                  label="Activo"
+                  variant="outlined"
+                  name="active"
+                  value={active}
+                  onChange={handleInputChange}
+                >
+                    <MenuItem key={true} value={true}>
+                      Activo
+                    </MenuItem>
+                    <MenuItem key={false} value={false}>
+                      Inactivo
+                    </MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            
           </Grid>
           <div style={{ display: 'flex', justifyContent: 'center', marginTop: 30 }}>
             <Button variant="contained" color="primary" onClick={() => handleSubmit('create')}>
@@ -201,6 +230,25 @@ const Provider = () => {
             <Grid item xs={6} >
               <TextField type='text' label="Nombres" variant="outlined" defaultValue={selectedData?.name} name='name' onChange={handleInputChange} />
             </Grid>
+            <Grid item xs={6}>
+              <FormControl sx={{ width: '100%' }}>
+                <InputLabel id="demo-simple-select-label-2">Activo</InputLabel>
+                <Select
+                  label="Activo"
+                  variant="outlined"
+                  name="active"
+                  value={active}
+                  onChange={handleInputChange}
+                >
+                    <MenuItem key={true} value={true}>
+                      Activo
+                    </MenuItem>
+                    <MenuItem key={false} value={false}>
+                      Inactivo
+                    </MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
           </Grid>
           <div style={{ display: 'flex', justifyContent: 'center', marginTop: 30 }}>
             <Button variant="contained" color="primary" onClick={() => handleSubmit('edit')} >
@@ -221,6 +269,9 @@ const Provider = () => {
           </Typography>
           <Typography id="ProviderAddress" variant="h6" component="h2">
             <b>Dirección: </b>{selectedData?.address ? 'Dirección' : 'No definido'}
+          </Typography>
+          <Typography id="userActive" variant="h6" component="h2">
+            <b>Activo: </b>{selectedData?.active ? 'Sí' : 'No'}
           </Typography>
         </Grid>
       </ModalGenerico>

@@ -26,12 +26,9 @@ export const setClient = async (dispatch) => {
     }
 }
 
-export const updateClient = async (id, data, dispatch) => {
+export const updateClient = async (id, data) => {
     try {
         const result = await clientController.updateClient(id, data);
-        if (result) {
-            dispatch(editClients(result.client));
-        }
         return result;
     }  catch (error) {
         return error;

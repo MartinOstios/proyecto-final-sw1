@@ -8,7 +8,7 @@ const ProviderSchema = Schema(
 			type: String,
 			default: "uploads/avatar/default.png",
 		},
-        visible: {
+        active: {
             type: Boolean,
             default: false
         },

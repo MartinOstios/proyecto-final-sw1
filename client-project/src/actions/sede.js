@@ -26,12 +26,9 @@ export const setSede = async (dispatch) => {
     }
 }
 
-export const updateSede = async (id, data, dispatch) => {
+export const updateSede = async (id, data) => {
     try {
         const result = await sedeController.updateSede(id, data);
-        if (result) {
-            dispatch(editSedes(result.sede));
-        }
         return result;
     }  catch (error) {
         return error;
