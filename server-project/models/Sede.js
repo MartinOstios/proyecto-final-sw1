@@ -8,6 +8,10 @@ const SedeSchema = Schema(
 			type: String,
 			unique: true,
 		},
+        active: {
+            type: Boolean,
+            default: false
+        },
         address: {
             type: Schema.Types.ObjectId,
             ref: Address,

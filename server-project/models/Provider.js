@@ -8,6 +8,10 @@ const ProviderSchema = Schema(
 			type: String,
 			default: "uploads/avatar/default.png",
 		},
+        visible: {
+            type: Boolean,
+            default: false
+        },
         address: {
             type: Schema.Types.ObjectId,
             ref: Address,

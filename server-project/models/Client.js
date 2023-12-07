@@ -8,6 +8,10 @@ const ClientSchema = Schema(
 			type: String,
 			default: "uploads/avatar/default.png",
 		},
+        active: {
+            type: Boolean,
+            default: false
+        },
         address: {
             type: Schema.Types.ObjectId,
             ref: Address,
