@@ -178,7 +178,6 @@ const Provider = () => {
         columns={
           [
             { field: 'name', headerName: 'Nombre', width: 200 },
-            { field: 'address', headerName: 'Direccion', width: 200 },
             {
               field: 'active', headerName: 'Activo', width: 150, renderCell: (params) => (
                 params.row.active ? <Chip label="Activo" color="primary" /> : <Chip label="Inactivo" color="error" />

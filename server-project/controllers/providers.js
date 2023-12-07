@@ -83,7 +83,7 @@ const CREATE = async (req, res) => {
 
 const READ_ALL = async (req, res) => {
 	try {
-		const providers = await Provider.find({});
+		const providers = await Provider.find({}).populate('address');
 		return res.status(200).send(providers);
 	} catch (e) {
 		return res.status(400).json({

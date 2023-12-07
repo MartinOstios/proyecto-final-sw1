@@ -150,21 +150,21 @@ const Index = () => {
 
             {sedes.map((sede) => (
               sede?.active ?
-              <Card sx={{ maxWidth: 345, minWidth: 100 }}>
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="div">
-                    {sede?.name}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    <b>Dirección</b>
-                    {sede?.adress}
-                  </Typography>
-                </CardContent>
-                <CardActions>
-                  <Button size="small">Ver en Mapa</Button>
-                </CardActions>
-              </Card>
-              : <></>
+                <Card sx={{ maxWidth: 345, minWidth: 100 }}>
+                  <CardContent>
+                    <Typography gutterBottom variant="h5" component="div">
+                      {sede?.name}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      <b>Dirección</b><br />
+                      {sede?.address.country}, {sede?.address.department}, {sede?.address.municipality}, {sede?.address.nomenclature}
+                    </Typography>
+                  </CardContent>
+                  <CardActions>
+                    <a target="_blank" href={"https://www.google.com/maps/dir/" + sede?.address.country + ", " + sede?.address.department + ", " + sede?.address.municipality + ", " + sede?.address.nomenclature}><Button size="small">Ver en Mapa</Button></a>
+                  </CardActions>
+                </Card>
+                : <></>
             ))}
           </div>
         </div>
@@ -173,58 +173,54 @@ const Index = () => {
           <div style={{ display: 'flex', gap: 30, flexWrap: 'wrap' }}>
             {clients.map((client) => (
               client?.active ?
-              <Card sx={{ minWidth: 200, maxWidth: 345 }}>
-                <CardMedia
-                  component="img"
-                  alt={client?.name}
-                  height="140"
-                  image={client?.avatarClient}
-                />
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="div">
-                    {client?.name}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    <b>Dirección</b>
-                    {client?.address}
-                  </Typography>
-                </CardContent>
-                <CardActions>
-                  <Button size="small">Ver en Mapa</Button>
-                </CardActions>
-              </Card>
-              : <></>
+                <Card sx={{ minWidth: 200, maxWidth: 345 }}>
+                  <CardMedia
+                    component="img"
+                    alt={client?.name}
+                    height="140"
+                    image={client?.avatarClient}
+                  />
+                  <CardContent>
+                    <Typography gutterBottom variant="h5" component="div">
+                      {client?.name}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      <b>Dirección</b><br />
+                      {client?.address ? <p>{client?.address.country}, {client?.address.department}, {client?.address.municipality}, {client?.address.nomenclature}</p> : <p>No definido</p>}
+                    </Typography>
+                    {client?.address?.country === 'Colombia' || !client?.address ? <Chip label='Nacional' color="primary" /> : <Chip label='Internacional' color="success" />}
+                  </CardContent>
+                </Card>
+                : <></>
             ))}
           </div>
         </div>
-        <div className='proveedores seccion' style={{marginBottom: '100px'}}>
+        <div className='proveedores seccion' style={{ marginBottom: '100px' }}>
           <h1>Nuestros proveedores</h1>
           <div style={{ display: 'flex', gap: 30, flexWrap: 'wrap' }}>
-          {providers.map((provider) => (
-            provider?.active ?
-            <Card sx={{ minWidth: 200, maxWidth: 345 }}>
-              <CardMedia
-                component="img"
-                alt={provider?.name}
-                height="140"
-                image={provider?.avatarClient}
-              />
-              <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-                  {provider?.name}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  <b>Dirección</b>
-                  <br/>
-                  {provider?.address}
-                </Typography>
-              </CardContent>
-              <CardActions>
-                <Button size="small">Ver en Mapa</Button>
-              </CardActions>
-            </Card>
-            : <></>
-          ))}
+            {providers.map((provider) => (
+              provider?.active ?
+                <Card sx={{ minWidth: 200, maxWidth: 345 }}>
+                  <CardMedia
+                    component="img"
+                    alt={provider?.name}
+                    height="140"
+                    image={provider?.avatarClient}
+                  />
+                  <CardContent>
+                    <Typography gutterBottom variant="h5" component="div">
+                      {provider?.name}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      <b>Dirección</b><br />
+                      {provider?.address ? <p>{provider?.address.country}, {provider?.address.department}, {provider?.address.municipality}, {provider?.address.nomenclature}</p> : <p>No definido</p>}
+                    </Typography>
+                    {provider?.address?.country === 'Colombia' || !provider?.address ? <Chip label='Nacional' color="primary" /> : <Chip label='Internacional' color="success" />}
+                  </CardContent>
+
+                </Card>
+                : <></>
+            ))}
           </div>
         </div>
 
