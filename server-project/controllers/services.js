@@ -30,6 +30,7 @@ const validate = (params, action) => {
 
 const CREATE = async (req, res) => {
 	const params = req.body;
+	console.log(req.files);
 	if (req.files) {
 		params.imagesClient = [];
 		params.imagesServer = [];
@@ -124,7 +125,7 @@ const READ_BY_ID = async (req, res) => {
 const UPDATE = async (req, res) => {
 	const id = req.params.id;
 	const updateParams = req.body;
-	if (req.files) {
+	if (req.files.length > 0) {
 		updateParams.imagesClient = [];
 		updateParams.imagesServer = [];
 		req.files.forEach((file) => {

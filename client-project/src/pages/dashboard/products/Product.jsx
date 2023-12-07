@@ -27,8 +27,8 @@ const Products = () => {
     imagen1: '',
     imagen2: '',
     imagen3: '',
-    active: false,
-    status: false
+    active: '',
+    status: ''
   });
 
   const { active, status } = formInfo;
@@ -40,6 +40,18 @@ const Products = () => {
   // ---- INICIO MODALES
 
   const handleOpenUpdate = async (state, dataId) => {
+    setFormInfo({
+      name: '',
+      description: '',
+      category: '',
+      provider: '',
+      imagen1: '',
+      imagen2: '',
+      imagen3: '',
+      active: '',
+      status: ''
+    });
+
     setOpenUpdate(state);
     const data = findDataById(dataId);
     setSelectedData(data);
@@ -52,6 +64,18 @@ const Products = () => {
   }
 
   const handleOpenCreate = async (state) => {
+    setFormInfo({
+      name: '',
+      description: '',
+      category: '',
+      provider: '',
+      imagen1: '',
+      imagen2: '',
+      imagen3: '',
+      active: '',
+      status: ''
+    });
+
     setOpenCreate(state);
   }
 
@@ -119,8 +143,14 @@ const Products = () => {
       formData.append('provider', formInfo.provider);
     }
 
-    formData.append('active', formInfo.active);
-    formData.append('status', formInfo.status);
+    if (formInfo.active !== '') {
+      formData.append('active', formInfo.active);
+    }
+
+    if (formInfo.status !== ''){
+      formData.append('status', formInfo.status);
+    }
+    
     if (form === 'create') {
       await handleCreate(formData)
     }
@@ -280,10 +310,10 @@ const Products = () => {
                 >
                   {categories.map((category) => (
                     category.active && category._id !== '656df1c115cc52697e6b100f' ?
-                    <MenuItem key={category._id} value={category._id}>
-                      {category.name}
-                    </MenuItem>
-                    : <></>
+                      <MenuItem key={category._id} value={category._id}>
+                        {category.name}
+                      </MenuItem>
+                      : <></>
                   ))}
                 </Select>
               </FormControl>
@@ -300,10 +330,10 @@ const Products = () => {
                 >
                   {providers.map((provider) => (
                     provider.active ?
-                    <MenuItem key={provider._id} value={provider._id}>
-                      {provider.name}
-                    </MenuItem>
-                    : <></>
+                      <MenuItem key={provider._id} value={provider._id}>
+                        {provider.name}
+                      </MenuItem>
+                      : <></>
                   ))}
                 </Select>
               </FormControl>
@@ -400,10 +430,10 @@ const Products = () => {
                 >
                   {categories.map((category) => (
                     category.active && category._id !== '656df1c115cc52697e6b100f' ?
-                    <MenuItem key={category._id} value={category._id}>
-                      {category.name}
-                    </MenuItem>
-                    : <></>
+                      <MenuItem key={category._id} value={category._id}>
+                        {category.name}
+                      </MenuItem>
+                      : <></>
                   ))}
                 </Select>
               </FormControl>
