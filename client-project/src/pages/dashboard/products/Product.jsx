@@ -3,6 +3,7 @@ import { Button, InputLabel, Typography, Grid, TextField, Select, MenuItem, Form
 import TableGenerica from '../../../components/table/TableGenerico'
 import ModalGenerico from '../../../components/modal/ModalGenerico'
 import { Category } from '../../../api/category'
+import { Provider } from '../../../api/provider'
 import { createProduct, deleteProduct, setProduct, updateProduct } from '../../../actions/product'
 import { useDispatch, useSelector } from 'react-redux'
 import { useSnackbar } from 'notistack'
@@ -11,6 +12,7 @@ const Products = () => {
   const { enqueueSnackbar } = useSnackbar();
   const data = useSelector((state) => state.products);
   const categoryApi = new Category();
+  const providerApi = new Provider();
   const dispatch = useDispatch();
   const [openUpdate, setOpenUpdate] = useState(false);
   const [openSearch, setOpenSearch] = useState(false);
@@ -21,6 +23,7 @@ const Products = () => {
     name: '',
     description: '',
     category: '',
+    provider: '',
     imagen1: '',
     imagen2: '',
     imagen3: '',
@@ -80,7 +83,6 @@ const Products = () => {
       reader.readAsDataURL(file);
     } else {
       setFormInfo((formInfo) => ({ ...formInfo, [event.target.name]: event.target.value }));
-      console.log(formInfo);
     }
 
   }
@@ -112,6 +114,9 @@ const Products = () => {
     }
     if (formInfo.category !== '') {
       formData.append('category', formInfo.category);
+    }
+    if (formInfo.provider !== '') {
+      formData.append('provider', formInfo.provider);
     }
 
     formData.append('active', formInfo.active);
@@ -168,6 +173,7 @@ const Products = () => {
 
   // ---------- EXTRAS
   const [categories, setCategories] = useState([]);
+  const [providers, setProviders] = useState([]);
 
   // ----------- FIN EXTRAS
 
@@ -175,6 +181,7 @@ const Products = () => {
   useEffect(() => {
     getData();
     getCategories();
+    getProviders();
   }, []);
 
   const getData = async () => {
@@ -193,6 +200,13 @@ const Products = () => {
     }
   }
 
+  const getProviders = async () => {
+    const data = await providerApi.showProviders();
+    if (data) {
+      setProviders(data);
+    }
+  }
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <h1>Productos</h1>
@@ -202,6 +216,7 @@ const Products = () => {
           [
             { field: 'name', headerName: 'Nombre', width: 200 },
             { field: 'category', headerName: 'Categoría', width: 200, valueGetter: (params) => params.row.category[0] ? params.row.category[0].name : 'No definido' },
+            { field: 'provider', headerName: 'Proveedor', width: 200, valueGetter: (params) => params.row.provider ? params.row.provider.name : 'No definido' },
             {
               field: 'active', headerName: 'Activo', width: 150, renderCell: (params) => (
                 params.row.active ? <Chip label="Activo" color="primary" /> : <Chip label="Inactivo" color="error" />
@@ -267,6 +282,26 @@ const Products = () => {
                     category.active && category._id !== '656df1c115cc52697e6b100f' ?
                     <MenuItem key={category._id} value={category._id}>
                       {category.name}
+                    </MenuItem>
+                    : <></>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={6}>
+              <FormControl sx={{ width: '100%' }}>
+                <InputLabel id="demo-simple-select-label-2">Proveedor</InputLabel>
+                <Select
+                  label="Proveedor"
+                  variant="outlined"
+                  name="provider"
+                  value={formInfo.provider}
+                  onChange={handleInputChange}
+                >
+                  {providers.map((provider) => (
+                    provider.active ?
+                    <MenuItem key={provider._id} value={provider._id}>
+                      {provider.name}
                     </MenuItem>
                     : <></>
                   ))}
@@ -434,6 +469,9 @@ const Products = () => {
           </Typography>
           <Typography id="productCategory" variant="h6" component="h2">
             <b>Categoria: </b>{selectedData?.category[0] ? selectedData.category[0].name : 'No definido'}
+          </Typography>
+          <Typography id="productCategory" variant="h6" component="h2">
+            <b>Proveedor: </b>{selectedData?.provider ? selectedData.provider.name : 'No definido'}
           </Typography>
           <Typography id="productDescription" variant="h6" component="h2">
             <b>Descripción: </b>{selectedData?.description}
