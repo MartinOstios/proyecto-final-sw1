@@ -26,7 +26,12 @@ const Provider = () => {
   const [formInfo, setFormInfo] = useState({
     name: '',
     avatar: null,
-    address: '',
+    address: {
+      country: '',
+      department: '',
+      municipality: '',
+      nomenclature: ''
+    },
     active: false
   });
 
@@ -70,7 +75,17 @@ const Provider = () => {
       };
 
       reader.readAsDataURL(file);
-    } else {
+    } 
+    else if (event.target.name.startsWith('address.')) {
+      const addressField = event.target.name.split('.')[1];
+      setFormInfo((prevFormInfo) => ({
+        ...prevFormInfo,
+        address: {
+          ...prevFormInfo.address,
+          [addressField]: event.target.value,
+        },
+      }));
+    }else {
       setFormInfo((formInfo) => ({ ...formInfo, [event.target.name]: event.target.value }));
     }
   }
@@ -84,8 +99,15 @@ const Provider = () => {
     // Pasar información a FormData (porque hay imágenes)
     const formData = new FormData();
     for (const [key, value] of Object.entries(formInfo)) {
+      if (key === 'address') {
+        // Si es la propiedad 'address', agregar cada campo individualmente
+        for (const [addressKey, addressValue] of Object.entries(value)) {
+          formData.append(addressKey, addressValue);
+        }
+      } else {
       if (value !== "") {
         formData.append(key, value);
+      }
       }
     }
 
@@ -184,9 +206,18 @@ const Provider = () => {
             <Grid item xs={6} >
               <TextField type='text' label="Nombres" variant="outlined" name='name' onChange={handleInputChange} />
             </Grid>
-            {/*  <Grid item xs={6}>
-              <TextField type='text' label="Dirección" variant="outlined" name='address' onChange={handleInputChange} />
-            </Grid> */}
+            <Grid item xs={6}>
+              <TextField type='text' label="Pais" variant="outlined" name='address.country' onChange={handleInputChange} />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField type='text' label="Departamento" variant="outlined" name='address.department' onChange={handleInputChange} />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField type='text' label="Municipio" variant="outlined" name='address.municipality' onChange={handleInputChange} />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField type='text' label="Nomenclatura" variant="outlined" name='address.nomenclature' onChange={handleInputChange} />
+            </Grid>
             <Grid item xs={6}>
               <FormControl sx={{ width: '100%' }}>
                 <InputLabel id="demo-simple-select-label-2">Activo</InputLabel>
@@ -267,10 +298,19 @@ const Provider = () => {
           <Typography id="ProviderName" variant="h6" component="h2">
             <b>Nombre: </b>{selectedData?.name}
           </Typography>
-          <Typography id="ProviderAddress" variant="h6" component="h2">
-            <b>Dirección: </b>{selectedData?.address ? 'Dirección' : 'No definido'}
+          <Typography id="providerAddress" variant="h6" component="h2">
+            <b>Pais: </b>{selectedData?.address ? selectedData.address.country : 'No definido'}
           </Typography>
-          <Typography id="userActive" variant="h6" component="h2">
+          <Typography id="providerAddress" variant="h6" component="h2">
+            <b>Departamento: </b>{selectedData?.address ? selectedData.address.department : 'No definido'}
+          </Typography>
+          <Typography id="providerAddress" variant="h6" component="h2">
+            <b>Municipio: </b>{selectedData?.address ? selectedData.address.municipality : 'No definido'}
+          </Typography>
+          <Typography id="providerAddress" variant="h6" component="h2">
+            <b>Nomenclatura: </b>{selectedData?.address ? selectedData.address.nomenclature : 'No definido'}
+          </Typography>
+          <Typography id="providerActive" variant="h6" component="h2">
             <b>Activo: </b>{selectedData?.active ? 'Sí' : 'No'}
           </Typography>
         </Grid>

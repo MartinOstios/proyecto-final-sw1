@@ -35,8 +35,16 @@ const CREATE = async (req, res) => {
 	try {
 		const exist = await Sede.find({name: params.name})
 		if(exist && exist.length > 0) throw new Error(`name '${params.name}' already exists`)
-		if (params.address) {
-			params.address = await Address.findById(params.address);
+		if (params.country && params.department && params.municipality && params.nomenclature) {
+			const address = new Address({
+				country: params.country,
+				department: params.department,
+				municipality: params.municipality,
+				nomenclature: params.nomenclature
+			});
+			
+			await address.save();
+			params.address = address
 		}
 		const sede = new Sede(params);
 		await sede.save();
