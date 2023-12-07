@@ -33,8 +33,8 @@ const CREATE = async (req, res) => {
 		});
 	}
 	try {
-		const exist = await Sede.find({name: params.name})
-		if(exist && exist.length > 0) throw new Error(`name '${params.name}' already exists`)
+		const exist = await Sede.find({ name: params.name })
+		if (exist && exist.length > 0) throw new Error(`name '${params.name}' already exists`)
 		if (params.country && params.department && params.municipality && params.nomenclature) {
 			const address = new Address({
 				country: params.country,
@@ -42,7 +42,7 @@ const CREATE = async (req, res) => {
 				municipality: params.municipality,
 				nomenclature: params.nomenclature
 			});
-			
+
 			await address.save();
 			params.address = address
 		}
@@ -66,7 +66,7 @@ const CREATE = async (req, res) => {
 
 const READ_ALL = async (req, res) => {
 	try {
-		const sedes = await Sede.find({});
+		const sedes = await Sede.find({}).populate('address');
 		return res.status(200).send(sedes);
 	} catch (e) {
 		return res.status(400).json({
@@ -118,8 +118,8 @@ const UPDATE = async (req, res) => {
 		});
 	}
 	try {
-		const exist = await Sede.find({name: updateParams.name})
-		if(updateParams.name && exist && exist.length > 0) throw new Error(`name '${updateParams.name}' already exists`)
+		const exist = await Sede.find({ name: updateParams.name })
+		if (updateParams.name && exist && exist.length > 0) throw new Error(`name '${updateParams.name}' already exists`)
 		if (updateParams.address) {
 			updateParams.address = await Address.findById(updateParams.address);
 		}

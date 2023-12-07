@@ -30,8 +30,7 @@ const validate = (params, action) => {
 
 const CREATE = async (req, res) => {
 	const params = req.body;
-	console.log(req.files);
-	if (req.files) {
+	if (req.files.length > 0) {
 		params.imagesClient = [];
 		params.imagesServer = [];
 		req.files.forEach((file) => {

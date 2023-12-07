@@ -11,7 +11,7 @@ import { useSnackbar } from 'notistack'
 const Headquarter = () => {
   const { enqueueSnackbar } = useSnackbar();
   const data = useSelector((state) => state.sedes);
-/*   const addressApi = new Address(); */
+  /*   const addressApi = new Address(); */
   const dispatch = useDispatch();
   const [openUpdate, setOpenUpdate] = useState(false);
   const [openSearch, setOpenSearch] = useState(false);
@@ -20,13 +20,11 @@ const Headquarter = () => {
   const [selectedData, setSelectedData] = useState(null);
   const [formInfo, setFormInfo] = useState({
     name: '',
-    address: {
-      country: '',
-      department: '',
-      municipality: '',
-      nomenclature: ''
-    },
-    contact : '',
+    country: '',
+    department: '',
+    municipality: '',
+    nomenclature: '',
+    contact: '',
     active: false
   });
 
@@ -67,19 +65,11 @@ const Headquarter = () => {
   const handleSubmit = async (form) => {
     setOpenBackdrop(true);
 
-    const formData = new FormData();
     const filterData = {};
     for (const [key, value] of Object.entries(formInfo)) {
-      if (key === 'address') {
-        // Si es la propiedad 'address', agregar cada campo individualmente
-        for (const [addressKey, addressValue] of Object.entries(value)) {
-          formData.append(addressKey, addressValue);
-        }
-      } else {
       if (value !== "") {
         filterData[key] = value;
       }
-    }
     }
 
     console.log(filterData);
@@ -164,19 +154,19 @@ const Headquarter = () => {
       <h1>Sedes</h1>
       <Button variant='contained' color='primary' onClick={() => handleOpenCreate(true)} style={{ margin: "2px 2px 10px 2px" }}>Crear Sede</Button>
       <TableGenerica
-       columns={
-        [
-          { field: '_id', headerName: 'ID', width: 100 },
-          { field: 'name', headerName: 'Nombre', width: 200 },
-          { field: 'contact', headerName: 'Contacto', width: 200 },
-          {
-            field: 'active', headerName: 'Activo', width: 150, renderCell: (params) => (
-              params.row.active ? <Chip label="Activo" color="primary" /> : <Chip label="Inactivo" color="error" />
-            )
-          }
-        ]
-      }
-      rows={data}
+        columns={
+          [
+            { field: '_id', headerName: 'ID', width: 100 },
+            { field: 'name', headerName: 'Nombre', width: 200 },
+            { field: 'contact', headerName: 'Contacto', width: 200 },
+            {
+              field: 'active', headerName: 'Activo', width: 150, renderCell: (params) => (
+                params.row.active ? <Chip label="Activo" color="primary" /> : <Chip label="Inactivo" color="error" />
+              )
+            }
+          ]
+        }
+        rows={data}
         handleOpenSearch={handleOpenSearch}
         handleOpenUpdate={handleOpenUpdate}
         handleDelete={handleDelete}
@@ -193,16 +183,16 @@ const Headquarter = () => {
               <TextField type='text' label="Contacto" variant="outlined" name='contact' onChange={handleInputChange} />
             </Grid>
             <Grid item xs={6}>
-              <TextField type='text' label="Pais" variant="outlined" name='address.country' onChange={handleInputChange} />
+              <TextField type='text' label="Pais" variant="outlined" name='country' onChange={handleInputChange} />
             </Grid>
             <Grid item xs={6}>
-              <TextField type='text' label="Departamento" variant="outlined" name='address.department' onChange={handleInputChange} />
+              <TextField type='text' label="Departamento" variant="outlined" name='department' onChange={handleInputChange} />
             </Grid>
             <Grid item xs={6}>
-              <TextField type='text' label="Municipio" variant="outlined" name='address.municipality' onChange={handleInputChange} />
+              <TextField type='text' label="Municipio" variant="outlined" name='municipality' onChange={handleInputChange} />
             </Grid>
             <Grid item xs={6}>
-              <TextField type='text' label="Nomenclatura" variant="outlined" name='address.nomenclature' onChange={handleInputChange} />
+              <TextField type='text' label="Nomenclatura" variant="outlined" name='nomenclature' onChange={handleInputChange} />
             </Grid>
             <Grid item xs={6}>
               <FormControl sx={{ width: '100%' }}>
@@ -214,12 +204,12 @@ const Headquarter = () => {
                   value={active}
                   onChange={handleInputChange}
                 >
-                    <MenuItem key={true} value={true}>
-                      Activo
-                    </MenuItem>
-                    <MenuItem key={false} value={false}>
-                      Inactivo
-                    </MenuItem>
+                  <MenuItem key={true} value={true}>
+                    Activo
+                  </MenuItem>
+                  <MenuItem key={false} value={false}>
+                    Inactivo
+                  </MenuItem>
                 </Select>
               </FormControl>
             </Grid>
@@ -252,12 +242,12 @@ const Headquarter = () => {
                   value={active}
                   onChange={handleInputChange}
                 >
-                    <MenuItem key={true} value={true}>
-                      Activo
-                    </MenuItem>
-                    <MenuItem key={false} value={false}>
-                      Inactivo
-                    </MenuItem>
+                  <MenuItem key={true} value={true}>
+                    Activo
+                  </MenuItem>
+                  <MenuItem key={false} value={false}>
+                    Inactivo
+                  </MenuItem>
                 </Select>
               </FormControl>
             </Grid>
