@@ -27,12 +27,8 @@ const Profile = () => {
     lastname: '',
     email: '',
     password: '',
-    active: false,
-    avatar: null,
-    role: '',
+    avatar: null
   });
-
-  const { role, active } = formInfo;
 
   const handleOpenUpdate = async (state, dataId) => {
     setOpenUpdate(state);
@@ -73,9 +69,10 @@ const Profile = () => {
 
   const handleEdit = async (formData) => {
     setOpenUpdate(false);
-    const res = await updateUser(data.email, formData, dispatch);
+    const res = await updateUser(data.email, formData);
     if (res && res.status === 200) {
       enqueueSnackbar(res.message, { variant: 'success' });
+      getData();
     } else {
       enqueueSnackbar(`Error: ${res.message}`, { variant: 'error' });
     }
@@ -136,12 +133,6 @@ const Profile = () => {
           <Typography id="userAddress" variant="h6" component="h2">
             <b>Dirección: </b>{data?.address ? 'Dirección' : 'No definido'}
           </Typography>
-          <Typography id="userActive" variant="h6" component="h2">
-            <b>Activo: </b>{data?.active ? 'Sí' : 'No'}
-          </Typography>
-          <Typography id="userRole" variant="h6" component="h2">
-            <b>Rol: </b>{data?.role ? data.role.name : 'No definido'}
-          </Typography>
         </Grid>
         <Button variant='contained' color='primary' onClick={() => handleOpenUpdate(true)} style={{ margin: "2px 2px 10px 2px" }}>Editar usuario</Button>
         <Button variant='contained' color='error' onClick={() => handleDelete(data._id)} style={{ margin: "2px 2px 10px 2px" }}>Cancelar usuario</Button>
@@ -167,41 +158,7 @@ const Profile = () => {
               <TextField type='text' label="Email" variant="outlined" defaultValue={data?.email} name='email' disabled onChange={handleInputChange} />
             </Grid>
             <Grid item xs={6}>
-              <FormControl sx={{ width: '100%' }}>
-                <InputLabel id="demo-simple-select-label-2">Rol</InputLabel>
-                <Select
-                  label="Rol"
-                  variant="outlined"
-                  name="role"
-                  value={role}
-                  onChange={handleInputChange}
-                >
-                  {roles.map((role) => (
-                    <MenuItem key={role._id} value={role._id}>
-                      {role.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={6}>
-              <FormControl sx={{ width: '100%' }}>
-                <InputLabel id="demo-simple-select-label-2">Activo</InputLabel>
-                <Select
-                  label="Activo"
-                  variant="outlined"
-                  name="active"
-                  value={active}
-                  onChange={handleInputChange}
-                >
-                    <MenuItem key={true} value={true}>
-                      Activo
-                    </MenuItem>
-                    <MenuItem key={false} value={false}>
-                      Inactivo
-                    </MenuItem>
-                </Select>
-              </FormControl>
+              <TextField type='password' label="Contraseña" variant="outlined" name='password' onChange={handleInputChange} />
             </Grid>
           </Grid>
           <div style={{ display: 'flex', justifyContent: 'center', marginTop: 30 }}>

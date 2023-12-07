@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, InputLabel, Typography, Grid, TextField, Select, MenuItem, FormControl, Backdrop, CircularProgress } from '@mui/material'
+import { Button, InputLabel, Typography, Grid, TextField, Select, MenuItem, FormControl, Backdrop, CircularProgress, Chip } from '@mui/material'
 import TableGenerica from '../../../components/table/TableGenerico'
 import ModalGenerico from '../../../components/modal/ModalGenerico'
 import { Sede } from '../../../api/sede'
@@ -22,7 +22,10 @@ const Headquarter = () => {
     name: '',
     /* address: '', */
     contact : '',
+    active: false
   });
+
+  const { active } = formInfo;
 
   const handleOpenUpdate = async (state, dataId) => {
     setOpenUpdate(state);
@@ -61,7 +64,7 @@ const Headquarter = () => {
 
     const filterData = {};
     for (const [key, value] of Object.entries(formInfo)) {
-      if (value !== "" && value) {
+      if (value !== "") {
         filterData[key] = value;
       }
     }
@@ -93,10 +96,11 @@ const Headquarter = () => {
   const handleEdit = async (data) => {
     // Llamar a la API
     setOpenUpdate(false);
-    const res = await updateSede(selectedData._id, data, dispatch);
+    const res = await updateSede(selectedData._id, data);
     // Llamar al Store
     if (res && res.status === 200) {
       enqueueSnackbar(res.message, { variant: 'success' });
+      getData();
     } else {
       enqueueSnackbar(`Error: ${res.message}`, { variant: 'error' });
     }
@@ -151,7 +155,12 @@ const Headquarter = () => {
         [
           { field: '_id', headerName: 'ID', width: 100 },
           { field: 'name', headerName: 'Nombre', width: 200 },
-          { field: 'contact', headerName: 'Contacto', width: 200 }
+          { field: 'contact', headerName: 'Contacto', width: 200 },
+          {
+            field: 'active', headerName: 'Activo', width: 150, renderCell: (params) => (
+              params.row.active ? <Chip label="Activo" color="primary" /> : <Chip label="Inactivo" color="error" />
+            )
+          }
         ]
       }
       rows={data}
@@ -188,6 +197,25 @@ const Headquarter = () => {
                 </Select>
               </FormControl>
             </Grid> */}
+            <Grid item xs={6}>
+              <FormControl sx={{ width: '100%' }}>
+                <InputLabel id="demo-simple-select-label-2">Activo</InputLabel>
+                <Select
+                  label="Activo"
+                  variant="outlined"
+                  name="active"
+                  value={active}
+                  onChange={handleInputChange}
+                >
+                    <MenuItem key={true} value={true}>
+                      Activo
+                    </MenuItem>
+                    <MenuItem key={false} value={false}>
+                      Inactivo
+                    </MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
           </Grid>
           <div style={{ display: 'flex', justifyContent: 'center', marginTop: 30 }}>
             <Button variant="contained" color="primary" onClick={() => handleSubmit('create')}>
@@ -225,6 +253,25 @@ const Headquarter = () => {
                 </Select>
               </FormControl>
             </Grid> */}
+            <Grid item xs={6}>
+              <FormControl sx={{ width: '100%' }}>
+                <InputLabel id="demo-simple-select-label-2">Activo</InputLabel>
+                <Select
+                  label="Activo"
+                  variant="outlined"
+                  name="active"
+                  value={active}
+                  onChange={handleInputChange}
+                >
+                    <MenuItem key={true} value={true}>
+                      Activo
+                    </MenuItem>
+                    <MenuItem key={false} value={false}>
+                      Inactivo
+                    </MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
           </Grid>
           <div style={{ display: 'flex', justifyContent: 'center', marginTop: 30 }}>
             <Button variant="contained" color="primary" onClick={() => handleSubmit('edit')} >
@@ -245,6 +292,9 @@ const Headquarter = () => {
           </Typography> */}
           <Typography id="sedeContact" variant="h6" component="h2">
             <b>Contacto: </b>{selectedData?.contact}
+          </Typography>
+          <Typography id="userActive" variant="h6" component="h2">
+            <b>Activo: </b>{selectedData?.active ? 'Sí' : 'No'}
           </Typography>
         </Grid>
       </ModalGenerico>

@@ -26,12 +26,9 @@ export const setProvider = async (dispatch) => {
     }
 }
 
-export const updateProvider = async (id, data, dispatch) => {
+export const updateProvider = async (id, data) => {
     try {
         const result = await providerController.updateProvider(id, data);
-        if (result) {
-            dispatch(editProviders(result.provider));
-        }
         return result;
     }  catch (error) {
         return error;

@@ -149,6 +149,7 @@ const Index = () => {
 
 
             {sedes.map((sede) => (
+              sede?.active ?
               <Card sx={{ maxWidth: 345, minWidth: 100 }}>
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="div">
@@ -163,6 +164,7 @@ const Index = () => {
                   <Button size="small">Ver en Mapa</Button>
                 </CardActions>
               </Card>
+              : <></>
             ))}
           </div>
         </div>
@@ -170,6 +172,7 @@ const Index = () => {
           <h1>Nuestros clientes</h1>
           <div style={{ display: 'flex', gap: 30, flexWrap: 'wrap' }}>
             {clients.map((client) => (
+              client?.active ?
               <Card sx={{ minWidth: 200, maxWidth: 345 }}>
                 <CardMedia
                   component="img"
@@ -190,6 +193,7 @@ const Index = () => {
                   <Button size="small">Ver en Mapa</Button>
                 </CardActions>
               </Card>
+              : <></>
             ))}
           </div>
         </div>
@@ -197,6 +201,7 @@ const Index = () => {
           <h1>Nuestros proveedores</h1>
           <div style={{ display: 'flex', gap: 30, flexWrap: 'wrap' }}>
           {providers.map((provider) => (
+            provider?.active ?
             <Card sx={{ minWidth: 200, maxWidth: 345 }}>
               <CardMedia
                 component="img"
@@ -218,6 +223,7 @@ const Index = () => {
                 <Button size="small">Ver en Mapa</Button>
               </CardActions>
             </Card>
+            : <></>
           ))}
           </div>
         </div>
