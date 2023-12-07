@@ -87,7 +87,7 @@ const CREATE = async (req, res) => {
 
 const READ_ALL = async (req, res) => {
 	try {
-		const services = await Service.find().populate('category');
+		const services = await Service.find().populate('category').populate('provider');
 		return res.status(200).send(services);
 	} catch (e) {
 		return res.status(400).json({
