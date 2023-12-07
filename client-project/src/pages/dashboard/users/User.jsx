@@ -49,6 +49,21 @@ const User = () => {
   // ---- INICIO MODALES
 
   const handleOpenUpdate = async (state, dataId) => {
+    setFormInfo({
+      name: '',
+      lastname: '',
+      email: '',
+      password: '',
+      active: false,
+      avatar: null,
+      role: '',
+      address: {
+        country: '',
+        department: '',
+        municipality: '',
+        nomenclature: ''
+      }
+    })
     setOpenUpdate(state);
     const data = findDataById(dataId);
     setSelectedData(data);
@@ -61,6 +76,21 @@ const User = () => {
   }
 
   const handleOpenCreate = async (state) => {
+    setFormInfo({
+      name: '',
+      lastname: '',
+      email: '',
+      password: '',
+      active: false,
+      avatar: null,
+      role: '',
+      address: {
+        country: '',
+        department: '',
+        municipality: '',
+        nomenclature: ''
+      }
+    })
     setOpenCreate(state);
   }
 
@@ -83,17 +113,16 @@ const User = () => {
       reader.readAsDataURL(file);
     }
     else if (event.target.name.startsWith('address.')) {
-    const addressField = event.target.name.split('.')[1];
-    setFormInfo((prevFormInfo) => ({
-      ...prevFormInfo,
-      address: {
-        ...prevFormInfo.address,
-        [addressField]: event.target.value,
-      },
-    }));
-  } else {
+      const addressField = event.target.name.split('.')[1];
+      setFormInfo((prevFormInfo) => ({
+        ...prevFormInfo,
+        address: {
+          ...prevFormInfo.address,
+          [addressField]: event.target.value,
+        },
+      }));
+    } else {
       setFormInfo((formInfo) => ({ ...formInfo, [event.target.name]: event.target.value }));
-      console.log(formInfo);
     }
   }
 
@@ -114,7 +143,10 @@ const User = () => {
         }
       } else {
         // Para otras propiedades, simplemente agregarlas al FormData
-        formData.append(key, value);
+        if (value !== ''){
+          formData.append(key, value);
+        }
+        
       }
     }
 

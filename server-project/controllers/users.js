@@ -49,12 +49,7 @@ const validate = (params, action) => {
 const CREATE = async (req, res) => {
 	const params = req.body;
 	console.log('Request params:', params);
-	console.log('Address data:', params.address);
-	if (params && params.address) {
-		Object.entries(params.address).forEach(([key, value]) => {
-			console.log(`${key}: ${value}`);
-		});
-	}
+
 	if (req.file) {
 		const file = req.file;
 		params.avatarClient = `http://localhost:3100/public/users/${file.filename}`;
@@ -83,13 +78,14 @@ const CREATE = async (req, res) => {
 		if (params.role) {
 			params.role = await Role.findById(params.role);
 		}
-		if (params.address) {
-			console.log('Address data 2:', params.address);
-			Object.entries(params.address).forEach(([key, value]) => {
-				console.log(`${key}: ${value}`);
+		if (params.country && params.department && params.municipality && params.nomenclature) {
+			const address = new Address({
+				country: params.country,
+				department: params.department,
+				municipality: params.municipality,
+				nomenclature: params.nomenclature
 			});
-			const address = new Address(params.address);
-			console.log(address);
+			
 			await address.save();
 			params.address = address
 		}
