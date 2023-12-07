@@ -48,7 +48,13 @@ const validate = (params, action) => {
 
 const CREATE = async (req, res) => {
 	const params = req.body;
-	console.log(params);
+	console.log('Request params:', params);
+	console.log('Address data:', params.address);
+	if (params && params.address) {
+		Object.entries(params.address).forEach(([key, value]) => {
+			console.log(`${key}: ${value}`);
+		});
+	}
 	if (req.file) {
 		const file = req.file;
 		params.avatarClient = `http://localhost:3100/public/users/${file.filename}`;
@@ -78,7 +84,14 @@ const CREATE = async (req, res) => {
 			params.role = await Role.findById(params.role);
 		}
 		if (params.address) {
-			params.address = await Address.findById(params.address);
+			console.log('Address data 2:', params.address);
+			Object.entries(params.address).forEach(([key, value]) => {
+				console.log(`${key}: ${value}`);
+			});
+			const address = new Address(params.address);
+			console.log(address);
+			await address.save();
+			params.address = address
 		}
 		const user = new User(params);
 		await user.save();
@@ -105,7 +118,7 @@ const CREATE = async (req, res) => {
 
 const READ_ALL = async (req, res) => {
 	try {
-		const users = await User.find().populate('role');
+		const users = await User.find().populate('role').populate('address');
 		return res.status(200).send(users);
 	} catch (e) {
 		return res.status(400).json({
@@ -127,7 +140,7 @@ const READ_BY_MAIL = async (req, res) => {
 		});
 	}
 	try {
-		const users = await User.find({ email: mail }).populate('role');
+		const users = await User.find({ email: mail }).populate('role').populate('address');
 		if (users.length === 0) {
 			return res.status(404).json({
 				status: 404,
@@ -287,7 +300,7 @@ const LOGIN = async (req, res) => {
 const GETME = async (req, res) => {
 	try {
 		const { _id } = req.user._doc;
-		const userFind = await User.findById(_id).populate('role');
+		const userFind = await User.findById(_id).populate('role').populate('address');
 		res.status(200).json(userFind);
 	} catch (err) {
 		res.status(400).json({ message: err.message });
