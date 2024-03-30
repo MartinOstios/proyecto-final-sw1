@@ -47,12 +47,11 @@ const CREATE = async (req, res) => {
 		});
 	}
 	try {
-		if (params.country && params.department && params.municipality && params.nomenclature) {
+		if (params.country && params.department && params.municipality) {
 			const address = new Address({
 				country: params.country,
 				department: params.department,
-				municipality: params.municipality,
-				nomenclature: params.nomenclature
+				municipality: params.municipality
 			});
 			
 			await address.save();

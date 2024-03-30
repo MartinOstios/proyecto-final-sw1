@@ -78,14 +78,13 @@ const CREATE = async (req, res) => {
 		if (params.role) {
 			params.role = await Role.findById(params.role);
 		}
-		if (params.country && params.department && params.municipality && params.nomenclature) {
+		if (params.country && params.department && params.municipality && params) {
 			const address = new Address({
 				country: params.country,
 				department: params.department,
-				municipality: params.municipality,
-				nomenclature: params.nomenclature
+				municipality: params.municipality
 			});
-			
+
 			await address.save();
 			params.address = address
 		}
@@ -330,14 +329,18 @@ const GENERATECODE = async (req, res) => {
 
 			if (method === 'whatsapp') {
 				if (phone_number) {
-					await sendWhatsapp(phone_number, numeroRandom);
-					user.tempCode = numeroRandom;
-					await user.save();
-					return res.status(200).json({
-						status: 200,
-						type: "info",
-						message: "Se envió el mensaje de Whatsapp correctamente"
-					});
+					const body = await sendWhatsapp(phone_number, numeroRandom);
+					if (!body.error) {
+						user.tempCode = numeroRandom;
+						await user.save();
+						return res.status(200).json({
+							status: 200,
+							type: "info",
+							message: "Se envió el mensaje de Whatsapp correctamente"
+						});
+					} else {
+						return res.status(400).json({message: 'Error con el servicio de mensajería'})
+					}
 				} else {
 					return res.status(400).json({ message: 'No se ingresó un número de teléfono' })
 				}
@@ -486,7 +489,7 @@ const sendWhatsapp = async (phone_number, code) => {
 	};
 	request(options, function (error, response, body) {
 		if (error) throw new Error(error);
-		console.log(body);
+		return body;
 	});
 }
 

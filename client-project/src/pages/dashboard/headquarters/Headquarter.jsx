@@ -2,22 +2,32 @@ import React, { useEffect, useState } from 'react'
 import { Button, InputLabel, Typography, Grid, TextField, Select, MenuItem, FormControl, Backdrop, CircularProgress, Chip } from '@mui/material'
 import TableGenerica from '../../../components/table/TableGenerico'
 import ModalGenerico from '../../../components/modal/ModalGenerico'
-import { Sede } from '../../../api/sede'
-/* import { Address } from '../../../api/address' */
 import { createSede, deleteSede, setSede, updateSede } from '../../../actions/sede'
 import { useDispatch, useSelector } from 'react-redux'
 import { useSnackbar } from 'notistack'
+import { Address } from '../../../components/address/Address'
 
 const Headquarter = () => {
   const { enqueueSnackbar } = useSnackbar();
   const data = useSelector((state) => state.sedes);
-  /*   const addressApi = new Address(); */
   const dispatch = useDispatch();
   const [openUpdate, setOpenUpdate] = useState(false);
   const [openSearch, setOpenSearch] = useState(false);
   const [openCreate, setOpenCreate] = useState(false);
   const [openBackdrop, setOpenBackdrop] = useState(false);
   const [selectedData, setSelectedData] = useState(null);
+
+
+  const [country, setCountry] = useState({
+    code: '',
+    label: '',
+    phone: ''
+  });
+  const [department, setDepartment] = useState('');
+  const [municipality, setMunicipality] = useState('');
+
+
+
   const [formInfo, setFormInfo] = useState({
     name: '',
     country: '',
@@ -58,6 +68,20 @@ const Headquarter = () => {
   const handleInputChange = (event) => {
     setFormInfo((formInfo) => ({ ...formInfo, [event.target.name]: event.target.value }));
   }
+
+  const handleCountry = (value) => {
+    setCountry(value);
+  }
+
+  const handleDepartment = (value) => {
+    setDepartment(value);
+  }
+
+  const handleMunicipality = (value) => {
+    setMunicipality(value);
+  }
+
+
   // ---------- FIN HANDLE CHANGES
 
   // ---------- INICIO HANDLE SUBMIT
@@ -72,7 +96,10 @@ const Headquarter = () => {
       }
     }
 
-    console.log(filterData);
+    filterData.country = country.label;
+    filterData.department = department;
+    filterData.municipality = municipality;
+
     if (form === 'create') {
       await handleCreate(filterData)
     }
@@ -121,17 +148,8 @@ const Headquarter = () => {
     setOpenBackdrop(false);
   }
 
-  // ---------- FIN HANDLE SUBMIT
-
-  // ---------- EXTRAS
-  /* const [addresses, setAdresses] = useState([]); */
-
-  // ----------- FIN EXTRAS
-
-  // ---- CARGAR INFO USUARIOS AL CARGAR PÁGINA
   useEffect(() => {
     getData();
-    /* getAdresses(); */
   }, []);
 
   const getData = async () => {
@@ -143,12 +161,6 @@ const Headquarter = () => {
     setOpenBackdrop(false);
   };
 
-  /* const getAddresses = async () => {
-    const data = await addressApi.showAddresses();
-    if (data) {
-      setAddresses(data);
-    }
-  } */
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <h1>Sedes</h1>
@@ -182,18 +194,9 @@ const Headquarter = () => {
             <Grid item xs={6}>
               <TextField type='text' label="Contacto" variant="outlined" name='contact' onChange={handleInputChange} />
             </Grid>
-            <Grid item xs={6}>
-              <TextField type='text' label="Pais" variant="outlined" name='country' onChange={handleInputChange} />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField type='text' label="Departamento" variant="outlined" name='department' onChange={handleInputChange} />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField type='text' label="Municipio" variant="outlined" name='municipality' onChange={handleInputChange} />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField type='text' label="Nomenclatura" variant="outlined" name='nomenclature' onChange={handleInputChange} />
-            </Grid>
+
+            <Address handleCountry={handleCountry} country={country} handleDepartment={handleDepartment} department={department} handleMunicipality={handleMunicipality} municipality={municipality} />
+
             <Grid item xs={6}>
               <FormControl sx={{ width: '100%' }}>
                 <InputLabel id="demo-simple-select-label-2">Activo</InputLabel>

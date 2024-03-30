@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { createClient, deleteClient, setClient, updateClient } from '../../../actions/client'
 
 import { useSnackbar } from 'notistack'
+import { Address } from '../../../components/address/Address'
 
 const Client = () => {
   const { enqueueSnackbar } = useSnackbar();
@@ -26,14 +27,20 @@ const Client = () => {
   const [formInfo, setFormInfo] = useState({
     name: '',
     avatar: null,
-    address: {
-      country: '',
-      department: '',
-      municipality: '',
-      nomenclature: ''
-    },
+    country: '',
+    department: '',
+    municipality: '',
+    nomenclature: '',
     active: false,
   });
+
+  const [country, setCountry] = useState({
+    code: '',
+    label: '',
+    phone: ''
+  });
+  const [department, setDepartment] = useState('');
+  const [municipality, setMunicipality] = useState('');
 
   const { active } = formInfo;
   // ---- PREVISUALIZACIÓN DE IMÁGENES
@@ -73,19 +80,22 @@ const Client = () => {
         setImagen(reader.result);
       };
       reader.readAsDataURL(file);
-    } 
-    else if (event.target.name.startsWith('address.')) {
-      const addressField = event.target.name.split('.')[1];
-      setFormInfo((prevFormInfo) => ({
-        ...prevFormInfo,
-        address: {
-          ...prevFormInfo.address,
-          [addressField]: event.target.value,
-        },
-      }));
-    } else {
+    }
+    else {
       setFormInfo((formInfo) => ({ ...formInfo, [event.target.name]: event.target.value }));
     }
+  }
+
+  const handleCountry = (value) => {
+    setCountry(value);
+  }
+
+  const handleDepartment = (value) => {
+    setDepartment(value);
+  }
+
+  const handleMunicipality = (value) => {
+    setMunicipality(value);
   }
 
   // ---------- FIN HANDLE CHANGES
@@ -97,17 +107,14 @@ const Client = () => {
     // Pasar información a FormData (porque hay imágenes)
     const formData = new FormData();
     for (const [key, value] of Object.entries(formInfo)) {
-      if (key === 'address') {
-        // Si es la propiedad 'address', agregar cada campo individualmente
-        for (const [addressKey, addressValue] of Object.entries(value)) {
-          formData.append(addressKey, addressValue);
-        }
-      }else{
       if (value !== "") {
         formData.append(key, value);
       }
     }
-    }
+
+    formData.append('country', country.label);
+    formData.append('department', department);
+    formData.append('municipality', municipality);
 
     if (form === 'create') {
       await handleCreate(formData)
@@ -204,18 +211,7 @@ const Client = () => {
             <Grid item xs={6} >
               <TextField type='text' label="Nombres" variant="outlined" name='name' onChange={handleInputChange} />
             </Grid>
-            <Grid item xs={6}>
-              <TextField type='text' label="Pais" variant="outlined" name='address.country' onChange={handleInputChange} />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField type='text' label="Departamento" variant="outlined" name='address.department' onChange={handleInputChange} />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField type='text' label="Municipio" variant="outlined" name='address.municipality' onChange={handleInputChange} />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField type='text' label="Nomenclatura" variant="outlined" name='address.nomenclature' onChange={handleInputChange} />
-            </Grid>
+            <Address handleCountry={handleCountry} country={country} handleDepartment={handleDepartment} department={department} handleMunicipality={handleMunicipality} municipality={municipality} />
             <Grid item xs={6}>
               <FormControl sx={{ width: '100%' }}>
                 <InputLabel id="demo-simple-select-label-2">Activo</InputLabel>
@@ -226,12 +222,12 @@ const Client = () => {
                   value={active}
                   onChange={handleInputChange}
                 >
-                    <MenuItem key={true} value={true}>
-                      Activo
-                    </MenuItem>
-                    <MenuItem key={false} value={false}>
-                      Inactivo
-                    </MenuItem>
+                  <MenuItem key={true} value={true}>
+                    Activo
+                  </MenuItem>
+                  <MenuItem key={false} value={false}>
+                    Inactivo
+                  </MenuItem>
                 </Select>
               </FormControl>
             </Grid>
@@ -259,25 +255,25 @@ const Client = () => {
               <TextField type='text' label="Nombre" variant="outlined" defaultValue={selectedData?.name} name='name' onChange={handleInputChange} />
             </Grid>
           </Grid>
-          <Grid item xs={6} sx={{marginTop: 2}}>
-              <FormControl sx={{ width: '100%' }}>
-                <InputLabel id="demo-simple-select-label-2">Activo</InputLabel>
-                <Select
-                  label="Activo"
-                  variant="outlined"
-                  name="active"
-                  value={active}
-                  onChange={handleInputChange}
-                >
-                    <MenuItem key={true} value={true}>
-                      Activo
-                    </MenuItem>
-                    <MenuItem key={false} value={false}>
-                      Inactivo
-                    </MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
+          <Grid item xs={6} sx={{ marginTop: 2 }}>
+            <FormControl sx={{ width: '100%' }}>
+              <InputLabel id="demo-simple-select-label-2">Activo</InputLabel>
+              <Select
+                label="Activo"
+                variant="outlined"
+                name="active"
+                value={active}
+                onChange={handleInputChange}
+              >
+                <MenuItem key={true} value={true}>
+                  Activo
+                </MenuItem>
+                <MenuItem key={false} value={false}>
+                  Inactivo
+                </MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
           <div style={{ display: 'flex', justifyContent: 'center', marginTop: 30 }}>
             <Button variant="contained" color="primary" onClick={() => handleSubmit('edit')} >
               Actualizar cliente

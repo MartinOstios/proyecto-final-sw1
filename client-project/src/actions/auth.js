@@ -58,6 +58,7 @@ export const logout = (dispatch) => {
 
 export const generate = async (data) => {
     const result = await authController.generate(data);
+    console.log(result);
     return result;
 }
 

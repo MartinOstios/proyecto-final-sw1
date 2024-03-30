@@ -61,7 +61,7 @@ const Register = () => {
 
   return (
     <div>
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '70vh' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
         <Box
           component="form"
           sx={{
@@ -73,7 +73,8 @@ const Register = () => {
             'paddingBottom': 4,
             'paddingRight': 2,
             'paddingLeft': 2,
-            'borderRadius': 3
+            'borderRadius': 3,
+            'marginTop': 10
           }}
           noValidate
           autoComplete="off"

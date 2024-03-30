@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import EmailIcon from '@mui/icons-material/Email';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
-import { Button, TextField } from '@mui/material';
+import { Button, TextField, Tooltip } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { generate, activate } from '../../../actions/auth';
 import { useSnackbar } from 'notistack'
@@ -57,9 +57,12 @@ const Activate = () => {
           Correo
         </Button>
         <p>ó</p>
-        <Button variant="outlined" startIcon={<WhatsAppIcon />} onClick={handleSendWhatsapp}>
-          Whatsapp
-        </Button>
+        <Tooltip title="Se acabó la prueba gratis con el bot para enviar los mensajes :(">
+          <Button variant="outlined" startIcon={<WhatsAppIcon />} onClick={handleSendWhatsapp}>
+            Whatsapp
+          </Button>
+        </Tooltip>
+
       </div>
       {activateBool ?
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 15, marginTop: 20 }}>
@@ -67,7 +70,7 @@ const Activate = () => {
           <TextField id="outlined-basic" label="Código" variant="outlined" onChange={handleChange} />
           <Button variant='outlined' onClick={handleSubmit}>Aceptar</Button>
         </div>
-      : <></>}
+        : <></>}
 
     </div>
   )
